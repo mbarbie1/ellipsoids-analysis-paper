@@ -1,0 +1,14 @@
+# Log files
+*.log
+
+# example folder
+example/
+test/
+algorithm/input/
+algorithm/output/
+
+# analysis_in_R folder
+analysis_in_R/
+
+# MATLAB temp files
+*.asv
