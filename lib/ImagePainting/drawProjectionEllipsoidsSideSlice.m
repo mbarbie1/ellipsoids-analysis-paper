@@ -54,7 +54,7 @@ function [ imgSide, labSide, overlaySide ] = drawProjectionEllipsoidsSideSlice( 
     end
     center = [ centerX', centerZ' ];
     value = 1:n;
-    
+
     imgSide = resample(imgSide, [1, round(pixelSize(3)/pixelSize(1))], [0, 0], 'nn');
     
     for k = 1:n
@@ -64,7 +64,8 @@ function [ imgSide, labSide, overlaySide ] = drawProjectionEllipsoidsSideSlice( 
     
     labSide = drawEllipses( newim( imgSide ), center, value, principalAxesList, axesDimensionsList, 0 );
     
-    overlaySide = overlay( stretch(imgSide, 0 ,100, 0, 1000), drawEllipses( newim( imgSide ), center, value, principalAxesList, axesDimensionsList, 2 ) );
+    %overlaySide = overlay( stretch(imgSide, 0 ,100, 0, 1000), drawEllipses( newim( imgSide ), center, value, principalAxesList, axesDimensionsList, 2 ) );
+    overlaySide = overlay( stretch(imgSide), drawEllipses( newim( imgSide ), center, value, principalAxesList, axesDimensionsList, 2 ) );
     
     endTime = toc();
     fprintf('sideSliceProjection2D: time duration: %s\n', num2str(endTime));

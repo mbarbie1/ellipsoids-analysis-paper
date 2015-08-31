@@ -21,9 +21,9 @@ function [ pixelSize, imgSize, channelIdNuclei, channelIdSpheroids, channelIdSpo
             channels = cellfun(@str2num, channelsSplit);
             stains = dataTable.stains(imageId);
             stains = stains{1};
-            channelIdSpheroids = channels( find(strcmp( strsplit(stains,','), fctOps.input.spheroidSegmentationChannel)) );
-            channelIdNuclei = channels( find(strcmp( strsplit(stains,','), fctOps.input.nucleiSegmentationChannel)) );
-            channelIdSpots = channels( find(strcmp( strsplit(stains,','), fctOps.input.spotDetectionChannel)) );
+            channelIdSpheroids = channels( find( regexpcmp( strsplit(stains,','), fctOps.input.spheroidSegmentationChannel ) ) );
+            channelIdNuclei = channels( find( regexpcmp( strsplit(stains,','), fctOps.input.nucleiSegmentationChannel ) ) );
+            channelIdSpots = channels( find( regexpcmp( strsplit(stains,','), fctOps.input.spotDetectionChannel ) ) );
         else
             if ( exist('channelIdSpheroids','var') )
                 % channel-ids are defined in options

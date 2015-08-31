@@ -6,6 +6,7 @@ example/
 test/
 algorithm/input/
 algorithm/output/
+input/
 
 # analysis_in_R folder
 analysis_in_R/

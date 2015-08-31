@@ -9,6 +9,7 @@ function [ union, overlap ] = getUnionLabAndRoi(roi, lab, msr, img)
     overlap.M = zeros( nRoi, nLab );
     overlap.m = zeros( nRoi, nLab );
     overlap.numDaughters = zeros( nRoi, 1 );
+    overlap.numParents = zeros( nLab, 1 );
     overlap.sizeM = zeros( nRoi, 1 );
     overlap.sizem = zeros( nRoi, 1 );
     overlap.missedPixelsM = zeros( nRoi, 1 );
@@ -53,7 +54,15 @@ function [ union, overlap ] = getUnionLabAndRoi(roi, lab, msr, img)
         overlap.daughters{k} = find( overlap.isDaughter(k,:) );
         overlap.numDaughters(k) = sum( overlap.isDaughter(k,:) );
         overlap.numDaughters = overlap.numDaughters';
-
     end
+%    try
+        for m = 1:nLab
+            overlap.numParents(m) = sum( overlap.isDaughter(:,m) );
+            overlap.parents{m} = find( overlap.isDaughter(:,m) );
+        end
+        overlap.numParents = overlap.numParents';
+%    catch e
+%        warning(e.message);
+%    end
 
 end

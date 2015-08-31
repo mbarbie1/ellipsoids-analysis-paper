@@ -70,11 +70,15 @@ function [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, cprof
         labEllipse = drawEllipses( newim(size(img) ), center, value, principalAxesList, axesDimensionsList, filled );
 
         for k = 1:n
-            lowerXBound = center3D( k, 1 ) - 1;
-            upperXBound = center3D( k, 1 ) + 1;
-            lowerYBound = center3D( k, 2 ) - 1;
-            upperYBound = center3D( k, 2 ) + 1;
-            cprof2D{k} = squeeze(squeeze(sum( sum( double( ( imgOri( lowerXBound:upperXBound, lowerYBound:upperYBound, : ) ) ) ) ) ));
+            extendRadiusPerc = 0.2;
+            extendRadius = max(1, round( extendRadiusPerc * min(axesDimensionsList{k}) ) );
+            disp('extendRadius:')
+            disp(extendRadius)
+            lowerXBound = center3D( k, 1 ) - extendRadius;
+            upperXBound = center3D( k, 1 ) + extendRadius;
+            lowerYBound = center3D( k, 2 ) - extendRadius;
+            upperYBound = center3D( k, 2 ) + extendRadius;
+            cprof2D{k} = squeeze(squeeze(mean( mean( double( ( imgOri( lowerXBound:upperXBound, lowerYBound:upperYBound, : ) ) ) ) ) ));
         end
         switch zRadiusMethod %            case 'radialProfile' %                prof = spheroidRadialIntensityCurves2D( img, mask2D, pixelSize)
             case 'averageRadius'
@@ -121,10 +125,6 @@ function [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, cprof
                 axesDimensionsList3D = axesDimensionsList;
                 maxPlanarRadius = max(axesDimensionsList{k});
                 for k = 1:n
-                    lowerXBound = center3D( k, 1 ) - 1;
-                    upperXBound = center3D( k, 1 ) + 1;
-                    lowerYBound = center3D( k, 2 ) - 1;
-                    upperYBound = center3D( k, 2 ) + 1;
                     cprof{k} = cprof2D{k};
                     dcprof{k} = diff(cprof{k});
                     [maxZ,coordZ] = max(dcprof{k});
@@ -135,6 +135,37 @@ function [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, cprof
                         axesDimensionsList3D{k}(end+1) = abs( (coordZ-1) - center3D(k,3) );
                     else
                         axesDimensionsList3D{k}(end+1) = ( pixelSize(1)/pixelSize(3) ) * mean(axesDimensionsList{k});
+                    end
+                end
+            case 'top'
+                % The radius in the z-direction we compute as the distance
+                % between the center and the first inclination point in the
+                % intensity curve which goes through the center of the
+                % spheroid.
+                principalAxesList3D = principalAxesList;
+                axesDimensionsList3D = axesDimensionsList;
+                for k = 1:n
+                    principalAxesList3D{k}{1}(end+1) = 0;
+                    principalAxesList3D{k}{2}(end+1) = 0;
+                    principalAxesList3D{k}{3} = [0, 0, 1]';
+                    axesDimensionsList3D{k}(end+1) = ( pixelSize(1)/pixelSize(3) ) * mean(axesDimensionsList{k});
+                end
+                for k = 1:n
+                    lowerXBound = center3D( k, 1 ) - 1;
+                    upperXBound = center3D( k, 1 ) + 1;
+                    lowerYBound = center3D( k, 2 ) - 1;
+                    upperYBound = center3D( k, 2 ) + 1;
+                    cprof{k} = cprof2D{k};
+                    dcprof{k} = diff(cprof{k});
+                    [maxZ,coordZ] = max(dcprof{k});
+                    principalAxesList3D{k}{1}(end+1) = 0;
+                    principalAxesList3D{k}{2}(end+1) = 0;
+                    principalAxesList3D{k}{3} = [0, 0, 1]';
+                    sz = size(imgOri);
+                    center3D(k,3) = min( sz(3)-1, max( 1, (coordZ-1) + round(axesDimensionsList3D{k}(3))));
+%                    center3D(k,3) = (coordZ-1) + round(axesDimensionsList3D{k}(3));
+                    if (center3D(k,3) == sz(3)-1)
+                        axesDimensionsList3D{k}(3) = center3D(k,3) - (coordZ-1);
                     end
                 end
             otherwise

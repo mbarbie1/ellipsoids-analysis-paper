@@ -72,9 +72,13 @@ function [ imgSide, labSide, overlaySide ] = sideSliceProjection( imgOri, imgMIP
         center(k,2) = center(k,2) * round(pixelSize(3)/pixelSize(1));
     end
     % Draw the ellipses in an empty image
-    labSide = drawEllipses( newim( imgSide ), center, value, principalAxesList, axesDimensionsList, 0 );
+    labSide = drawEllipses( newim( imsize(imgSide) ), center, value, principalAxesList, axesDimensionsList, 0 );
     % Overlay the mosaic image with the generated images 
-    overlaySide = overlay( stretch(imgSide, 0 ,100, 0, 1000), drawEllipses( newim( imgSide ), center, value, principalAxesList, axesDimensionsList, 2 ) );
+    labTemp = drawEllipses( newim( imsize(imgSide) ), center, value, principalAxesList, axesDimensionsList, 2 );
+    
+    %labTemp = drawLines( labTemp, center axesDimensionsList
+    % overlaySide = overlay( stretch(imgSide, 0 ,100, 0, 1000), labTemp );
+    overlaySide = overlay( stretch(imgSide), labTemp );
 
     endTime = toc();
     fprintf('sideSliceProjection2D: time duration: %s\n', num2str(endTime));

@@ -75,6 +75,12 @@ function [ imgSideOverlay, imgMIPOverlay, imgHeightViewOverlay ] = paper_figure_
         imgMask = drawpolygon(imgMask,coordinates,intensity,closed);
     end
 
+    imgMIPJet = image(dip_array(stretch(imgMIP)));
+    colormap(jet);
+%    imgMIPOverlay = overlay(stretch(imgMIPJet),imgMask, [255,0,0]);
+%    dipshow(stretch(imgMIPOverlay));
+    imgMIPOverlay = overlay(newim(imsize(imgMIP)),imgMask, [255,0,0]);
+    dipshow(stretch(imgMIPOverlay));
     imgMIPOverlay = overlay(stretch(imgMIP),imgMask, [255,0,0]);
     dipshow(stretch(imgMIPOverlay));
 

@@ -58,7 +58,8 @@ function [imgSH, labTop, overlayTop] = drawProjectionEllipsoidsTopSlice( imgOri,
     filled = 0;
     value = 1:n;
     labTop = drawEllipses( newim( imgSH ), center, value, principalAxesList, axesDimensionsList, filled );
-    overlayTop = overlay( stretch(imgSH, 0 ,100, 0, 1000), drawEllipses( newim( size(imgSH) ), center, value, principalAxesList, axesDimensionsList, 2 ) );
+%    overlayTop = overlay( stretch(imgSH, 0 ,100, 0, 1000), drawEllipses( newim( size(imgSH) ), center, value, principalAxesList, axesDimensionsList, 2 ) );
+    overlayTop = overlay( stretch(imgSH), drawEllipses( newim( size(imgSH) ), center, value, principalAxesList, axesDimensionsList, 2 ) );
     
     endTime = toc();
     fprintf('topSliceProjection2D: time duration: %s\n', num2str(endTime));

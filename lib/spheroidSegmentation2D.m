@@ -57,6 +57,7 @@ function [imgMIPZ, imgMIPZH, lab, imgContour] = spheroidSegmentation2D( img, fct
     
 %%% OUTPUT CONTOUR
 
-    imgContour = createContourOverlay( stretch(imgMIPZ,1,99), lab );
+%    imgContour = createContourOverlay( stretch(imgMIPZ,1,99), lab );
+    imgContour = createContourOverlay( stretch(imgMIPZ), lab );
 
 end

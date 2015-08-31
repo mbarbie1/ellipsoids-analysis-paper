@@ -63,8 +63,13 @@
 
 %% PARAMETERS
 
-    %options = loadjson('optionsBatchProcess.json');
-    options = loadjson('input/optionsBatchProcess_Kristin_floaters.json');
+   %options = loadjson('optionsBatchProcess.json');
+   % options = loadjson('input/optionsBatchProcess_Kjersti_floaters_EdU.json');
+   % options = loadjson('input/optionsBatchProcess_Kjersti_floaters_ToPRO.json');
+   % options = loadjson('input/optionsBatchProcess_Kristin_floaters.json');
+   % options = loadjson('input/optionsBatchProcess_Marta.json');
+   options = loadjson('input/optionsBatchProcess_Marta_20x.json');
+   % options = loadjson('input/optionsBatchProcess_Kristin_embedded_fixed.json');
 
 %% IMPORT SAMPLES
 
@@ -109,7 +114,6 @@
         try
             %[ msra, lab, labEllipse, imgSpheroids, spotTable, imgSpots ] = analyseImage(options);
             [ msra{j}, ~, ~, mip, spotTable{j}, ~, radialProfiles ] = analyseImage(options);
-            dipshow(radialProfiles);
             succesfullAnalysis = true;
             imageSummary(j) = getSummary(options, succesfullAnalysis, '', mip, msra{j}, spotTable{j});
         catch e
@@ -140,7 +144,7 @@
             fprintf('Saving time all spot detection measurements (%s) = %i\n', options.output.spotsAll{j}.format, tstop);
         end
     end
-    
+
     msraAll = vertcat( msra{:} );
     for j = 1:length(options.output.msrAll)
         if (options.output.msrAll{j}.write)

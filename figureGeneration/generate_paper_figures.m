@@ -28,7 +28,7 @@
     channelIdNuclei = 4;
     channelIdProliferation = 1;
     seriesId = [];
-    imageDir = '../example/input';
+    imageDir = '../input';
     filePath = 'S2_File.tif';
     imageMicroscopeFormat = 'Opera';
     % unit is um
@@ -60,13 +60,13 @@
 
 %% FIGURE 3: HEIGHT VIEW ILLUSTRATION
 
-    [ imgSideOverlay, imgMIPOverlay, imgHeightViewOverlay ] = paper_figure_heightviewExplanation( imgRFP );
+%    [ imgSideOverlay, imgMIPOverlay, imgHeightViewOverlay ] = paper_figure_heightviewExplanation( imgRFP );
 
-%% FIGURE 4: Segmentation2D method
-
-    [ subMIP, subOverlaySegmentation2D, subHeightView, subRangeHeight ] = paper_figure_segmentationMethod( imgRFP, options );
-
-%% FIGURE 5: Fitting of the ellipsoids
-
-    [ overlaySegmentation2D, overlayTop, overlaySide, lab, lab2D, lab3D ] = paper_figure_ellipsoidFit( imgRFP, options );
-    [ profa ] = paper_figure_radialIntensityCurves( lab3D, imgRFP, pixelSize );
+% %% FIGURE 4: Segmentation2D method
+% 
+%     [ subMIP, subOverlaySegmentation2D, subHeightView, subRangeHeight ] = paper_figure_segmentationMethod( imgRFP, options );
+% 
+% %% FIGURE 5: Fitting of the ellipsoids
+% 
+     [ overlaySegmentation2D, overlayTop, overlaySide, lab, lab2D, lab3D ] = paper_figure_ellipsoidFit( imgRFP, options );
+%     [ profa ] = paper_figure_radialIntensityCurves( lab3D, imgRFP, pixelSize );

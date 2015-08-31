@@ -122,17 +122,27 @@ function [ msra, lab, labEllipse, imgSpheroids, spotTable, imgSpots, radialProfi
 
     % 2D segmentation of the image
     options.segmentation.pixelSize = pixelSize;
-    [imgMIPZ, imgMIPZH, lab, contour] = spheroidSegmentation2D( img, options.segmentation );
+    switch options.segmentation.segmentationMethod
+        case 'manual'
+            subStruct.name = {'n'}; subStruct.value = {imageId}; subStruct.type = {'int'};
+            regexString = options.input.roiPattern;
+            ROIFilename = getGeneralName(subStruct, regexString);
+            ROIImageDir = options.input.roiDir;
+            roi = ReadImageJROI( fullfile(ROIImageDir, ROIFilename) );
+            [imgMIPZ, imgMIPZH, lab, contour] = manualSegmentation2D( img, roi, options.input.roiColorType, options.segmentation );
+        otherwise
+            [imgMIPZ, imgMIPZH, lab, contour] = spheroidSegmentation2D( img, options.segmentation );
+    end
     % Fitting of ellipsoids to the lab image
     [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, centerProfiles, spheroidIndexStart, spheroidIndexStop] = fitSpheroidAxes(img, imgMIPZ, imgMIPZH, lab, options.input.pixelSize, options.ellipsoidFit.centerMethod, options.ellipsoidFit.zRadiusMethod);
     % rad
     radialProfiles = [];
-%    if ( exist( 'option.ellipsoidFit.radialProfiles', 'var' ) )
-        if ( options.ellipsoidFit.radialProfiles == 1 )
-            radialProfiles = spheroidRadialIntensityCurves2D( img, lab > 0, options.input.pixelSize);
-            dipshow(radialProfiles);
-        end
-%    end
+% %    if ( exist( 'option.ellipsoidFit.radialProfiles', 'var' ) )
+%         if ( options.ellipsoidFit.radialProfiles )
+%             radialProfiles = spheroidRadialIntensityCurves2D( img, lab > 0, options.input.pixelSize);
+%             dipshow(radialProfiles);
+%         end
+% %    end
     % Derive a valid range for the depth of the spheroid, which can be
     % used for the spot detection without missing any spots, from the 
     % intensity profiles through the spheroid centers
@@ -142,13 +152,23 @@ function [ msra, lab, labEllipse, imgSpheroids, spotTable, imgSpots, radialProfi
     % Plotting the middle slices of the spheroids of the side projection, add the ellipse contours, and construct a mosaic image
     %[ imgSide, labSide, overlaySide ] = sideSliceProjection( img, imgMIPZH, lab, options.input.pixelSize);
     [ imgSide, labSide, overlaySide ] = sideSliceProjection( img, imgMIPZH, lab, options.input.pixelSize, center3D, principalAxesList3D, axesDimensionsList3D );
+    % Side-slice projection + analyzable depth labeled as a plot
+    % Add lines/points showing the maximal intensity, center, and analyzable depth
+    %%
+%    p.PaperUnits = 'inches';
+%    p.PaperPosition = [0 0 6 3];
+%    p.PaperPositionMode = 'manual';
+   
+    %set(gca,'ydir','normal');
+%    hold off;
+    %%
 
     clear img;
     % Perform measurements on spheroid 2D masks and their ellipses.
     msr = ellipsoidValidationMeasurements( imgMIPZ, imgMIPZH, lab, labEllipse, options.input.pixelSize );
 
     imgSpheroids = imgMIPZ;
-    
+
 %% LOAD THE SPOTS IMAGE
 
     % Load image data from microscopy files
@@ -315,6 +335,35 @@ function [ msra, lab, labEllipse, imgSpheroids, spotTable, imgSpots, radialProfi
         
     end
 
+%% SAVING MATLAB PLOTS
+    try
+        subStruct.name = {'n'}; subStruct.value = {imageId}; subStruct.type = {'int'};
+        for j = 1:length(options.output.plots)
+
+            tstart = tic;
+            if ~exist(options.output.plots{j}.dir, 'dir')
+                mkdir(pwd, options.output.plots{j}.dir);
+            end
+            
+            outputFormat = options.output.plots{j}.format;
+            regexString = options.output.plots{j}.pattern;
+            destinationPath = fullfile( options.output.plots{j}.dir, getGeneralName(subStruct, regexString) );
+            if (options.output.images{j}.write)
+                if ( strcmp('plotOverlaySide', options.output.plots{j}.name) )
+                    tempOverlaySide = createContourOverlayTick( imgSide, labSide, 2 );
+                    plotOverlaySide = sideSliceProjectionQC( tempOverlaySide, options.input.pixelSize, center3D, centerProfiles, spheroidIndexStart, profileStop );
+                end
+                print( eval(options.output.plots{j}.name), destinationPath, ['-d' outputFormat], '-r300');
+            end
+            tstop = toc(tstart);
+            fprintf('Processing time preparing and saving %s = %i\n', options.output.plots{j}.name, tstop);
+        end
+    catch e
+        warning('analyseImage: No plot defined');
+    end
+
+
+    
 %% SAVING MAT OUTPUT
     
     if (options.output.mat.write)

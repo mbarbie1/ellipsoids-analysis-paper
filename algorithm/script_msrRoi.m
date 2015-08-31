@@ -1,3 +1,18 @@
+% SCRIPT: calculates the measurements for both the roi images given in the
+%           parameter input file (that 2D segmentation roi's) and the masks
+%           obtained from the 2D segmentation algorithm.
+%           The options of the script are given by a
+%           separate options file which is a .json file, the default name
+%           is: optionsErrorGT.json.
+% 
+% AUTHOR: 
+%
+% 	Michaël Barbier
+%   mbarbie1@its.jnj.com
+% 
+% ----------------------------------------------------------------------- 
+%
+
 %% LOADING LIBRARIES
 
     clear
@@ -14,7 +29,6 @@
     end
     
 %%
-    
     options = loadjson('input/optionsErrorGT.json');
 
 %% IMPORT SAMPLES (not GT)
@@ -51,26 +65,18 @@
         filePath = options.input.filePath;
         tstart = tic;
         img = loadMicroscopeImageStack( options.input.imageDir, options.input.filePath, channelId, options.input.seriesId, options.input.imageMicroscopeFormat );
-        %[mip,h] = max(img,[],3);
-        %mip = squeeze(mip);
-        %h = squeeze(h);
 
         % segmentation of the image
         options.segmentation.pixelSize = pixelSize;
         [mip, h, lab, contour] = spheroidSegmentation2D( img, options.segmentation );
          sz3D = imsize(img);
 
-        %%% parameters of the GT ROI
+        % parameters of the GT ROI
         ROIFilename = ['RoiSet_' num2str(imageId) '.zip'];
         ROIImageDir = 'C:/Users/mbarbie1/Desktop/PAPER/GT_images';
         roi = ReadImageJROI( fullfile(ROIImageDir, ROIFilename) );
-
-        %%
-    %     pp = roi{86}.mnCoordinates;
-    %     figure();
-    %     plot(pp(:,1),pp(:,2),'o-b');
-
         n = length(roi);
+        
         % segmentation measurements
         msrFields = {'size','center','Maximum','Minimum','Radius','ConvexArea','P2A','Feret','PodczeckShapes',...
             'mean','StdDev','MinVal','MaxVal','Skewness','ExcessKurtosis'};
@@ -81,7 +87,7 @@
         end
 
         % construct the roi masks
-        imgCell = {mip, h};
+        imgCell = {mip};
         colorType = struct(...
             'color', {[255,0,0],[0,255,0],[0,0,255],[0,255,255],[255,0,255]}, ...
             'type', {1,2,3,4,5}, ...
@@ -126,16 +132,14 @@
         [union, overlap] = getUnionLabAndRoi(roi, lab, msr, imgCell);
 
         % plot the images with the contours of the roi and of the lab
-    %    dipshow(contour);
         maskContour = newim(imsize(mip));
         for k = 1:n
             maskContour( sub2ind(maskContour, roi{k}.pAbs-1) ) = roi{k}.type;
         end
         contourGT = createContourOverlay( mip, maskContour);
-    %    dipshow(contourGT);
 
         j = 0
-        clear dataMsrGT2 dataMsrLab dataRoiType dataOverlap dataM
+        clear dataMsrGT2 dataMsrGT3 dataMsrLab dataRoiType dataOverlap dataM
         dataOverlap = zeros(n,1);
         dataRoiType = -1 * ones(n,1);
         dataM = zeros(n,1);
@@ -150,69 +154,59 @@
                     dataMsrLab(k) = msra(daughter(m));
                     dataMsrGT2(k) = roi{k}.msr;
                     dataMsrGT2(k).id = k;
-    %                dataMsrGT2(k).imageId = imageId;
-    %                dataMsrGT2(k).roiType = roi{k}.type;
                     dataRoiType(k) = roi{k}.type;
                     dataRoiColor(j,:) = roi{k}.argb(2:4);
-    %                data(k).circularity = ;
                 end
             else
 
             end
         end
+        for k = 1:n
+            dataMsrGT3(k) = roi{k}.msr;
+            dataMsrGT3(k).id = k;
+        end
+        for k = 1:n
+            dataMsrGT3(k).numDaughters = overlap.numDaughters(k);
+            dataMsrGT3(k).daughters = overlap.daughters{k};
+        end
+        for k = 1:length(msra)
+            msra(k).numParents = overlap.numParents(k);
+            msra(k).parents = overlap.parents{k};
+        end
 
         dataMsrLab_cell{ii} = dataMsrLab';
         dataMsrGT_cell{ii} = dataMsrGT2';
+        dataMsrGT_ul_cell{ii} = dataMsrGT3';
         dataM_cell{ii} = dataM;
         dataOverlap_cell{ii} = dataOverlap;
         dataRoiType_cell{ii} = dataRoiType;
 
-        imageId_cell{ii} = imageId * ones(k,1);
+        imageId_cell{ii} = imageId * ones(n,1);
         roiId_cell{ii} = (1:n)';
+        overlap_cell{ii} = overlap;
+        
+        dataNumParents_cell{ii} = msra;
+        dataNumDaughters_cell{ii} = overlap.numDaughters(:);
     
     end
     
     % TODO
+    msrLab_n = vertcat( dataNumParents_cell{:} );
     msrLab_all = vertcat( dataMsrLab_cell{:} );
+    msrGT_n = vertcat( dataMsrGT_ul_cell{:} );
     msrGT_all = vertcat( dataMsrGT_cell{:} );
     M_all = vertcat( dataM_cell{:} );
     overlap_all = vertcat( dataOverlap_cell{:} );
     roiType_all = vertcat( dataRoiType_cell{:} );
     imageIdVec = vertcat( imageId_cell{:} );
     roiIdVec = vertcat( roiId_cell{:} );
-    
+    numDaughters_all = vertcat( dataNumDaughters_cell{:} );
+
+    savejson('overlap',overlap_cell,'output/gt_error/overlap.json');
+
+    writetable(struct2table(msrLab_n),'output/gt_error/msrLab_nLab.csv')
     writetable(struct2table(msrLab_all),'output/gt_error/msrLab.csv')
     writetable(struct2table(msrGT_all),'output/gt_error/msrGT.csv')
-    T = table(imageIdVec, roiIdVec, roiType_all, overlap_all, M_all, 'VariableNames', { 'imageId', 'roiId' ,'roiType', 'overlap', 'M' });
+    writetable(struct2table(msrGT_n),'output/gt_error/msrGT_nGT.csv')
+    T = table(imageIdVec, roiIdVec, roiType_all, overlap_all, M_all, numDaughters_all, 'VariableNames', { 'imageId', 'roiId' ,'roiType', 'overlap', 'M', 'numDaughters' });
     writetable( T, 'output/gt_error/overlap.csv');
-
-    % check the daughters of the 
-    
-%     zz = [roi{:}]';
-%     dataMsrGT = vertcat(zz.msr);
-% %    dataMsrLab = vertcat(zz.msr)
-%     y1 = [dataMsrLab(overlap.numDaughters > 0).Size]';
-%     y2 = [dataMsrGT(overlap.numDaughters > 0).Size]';
-%     y4 = dataRoiType(overlap.numDaughters > 0);
-%     y3 = y1./y2;
-% 
-%     uDiff = [dataMsrLab(:).Size] ./ [dataMsrGT(overlap.numDaughters > 0).Size];
-%     [s,si] = sort(uDiff);
-%     for l = 1:sum(overlap.numDaughters > 0)
-%         cc = find(overlap.numDaughters > 0);
-%         cDiff1(l) = dataMsrLab(cc(l)).PodczeckShapes(2);
-%         cDiff2(l) = dataMsrGT(l).PodczeckShapes(2);
-%     end
-%     
-%     nn = sum(overlap.numDaughters > 0);
-%     colors = dataRoiColor/255;%hsv2rgb([[dataRoiType(overlap.numDaughters > 0)]', ones(nn,1),ones(nn,1)])
-%     figure();
-%     scatter( 1:length(s), s, 20, colors(si,:) );
-%     figure();
-%     scatter( 1:length(s), cDiff1, 20, colors(si,:) ); hold on;
-%     scatter( 1:length(s), cDiff2, 20, colors(si,:),'d' );
-%     for m = 1:length(cDiff1) 
-%         plot( [m; m] , [cDiff1(m); cDiff2(m)]); hold on;
-%     end
-%     hold off;
-% %    plot( si, dataRoiType(overlap.numDaughters > 0), 'ob');
