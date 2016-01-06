@@ -129,44 +129,44 @@ function [ msra, lab, labEllipse, imgSpheroids, spotTable, imgSpots, radialProfi
             ROIFilename = getGeneralName(subStruct, regexString);
             ROIImageDir = options.input.roiDir;
             roi = ReadImageJROI( fullfile(ROIImageDir, ROIFilename) );
-            [imgMIPZ, imgMIPZH, lab, contour] = manualSegmentation2D( img, roi, options.input.roiColorType, options.segmentation );
+            [imgMIPZ, imgMIPZH, lab, contour, roi] = manualSegmentation2D( img, roi, options.segmentation );
+            % Fitting of ellipsoids to the lab image
+            [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, centerProfiles, spheroidIndexStart, spheroidIndexStop] = fitSpheroidAxesRoi(img, imgMIPZ, imgMIPZH, roi, options.input.pixelSize, options.ellipsoidFit.centerMethod, options.ellipsoidFit.zRadiusMethod);
+            radialProfiles = [];
+            % Derive a valid range for the depth of the spheroid, which can be
+            % used for the spot detection without missing any spots, from the 
+            % intensity profiles through the spheroid centers
+            [profileStop, profileStopRange, depthPercentage, depthType] = analyseAttenuationProfile(center3D(:,3), centerProfiles, spheroidIndexStart, spheroidIndexStop, options.attenuationAnalysis.profileAttenuationRatio );
+            clear img;
+            % Perform measurements on spheroid 2D masks and their ellipses.
+            msr = ellipsoidValidationMeasurementsRoi( imgMIPZ, imgMIPZH, roi, center3D(:,3), labEllipse, pixelSize );
         otherwise
             [imgMIPZ, imgMIPZH, lab, contour] = spheroidSegmentation2D( img, options.segmentation );
+            % Fitting of ellipsoids to the lab image
+            [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, centerProfiles, spheroidIndexStart, spheroidIndexStop] = fitSpheroidAxes(img, imgMIPZ, imgMIPZH, lab, options.input.pixelSize, options.ellipsoidFit.centerMethod, options.ellipsoidFit.zRadiusMethod);
+            % rad
+            radialProfiles = [];
+        % %    if ( exist( 'option.ellipsoidFit.radialProfiles', 'var' ) )
+        %         if ( options.ellipsoidFit.radialProfiles )
+        %             radialProfiles = spheroidRadialIntensityCurves2D( img, lab > 0, options.input.pixelSize);
+        %             dipshow(radialProfiles);
+        %         end
+        % %    end
+            % Derive a valid range for the depth of the spheroid, which can be
+            % used for the spot detection without missing any spots, from the 
+            % intensity profiles through the spheroid centers
+            [profileStop, profileStopRange, depthPercentage, depthType] = analyseAttenuationProfile(center3D(:,3), centerProfiles, spheroidIndexStart, spheroidIndexStop, options.attenuationAnalysis.profileAttenuationRatio );
+            % Plotting the middle slices of the spheroids of the top projection, add the ellipse contours, and construct a mosaic image
+            [imgSH, labTop, overlayTop] = topSliceProjection( img, lab, center3D, principalAxesList3D, axesDimensionsList3D);
+            % Plotting the middle slices of the spheroids of the side projection, add the ellipse contours, and construct a mosaic image
+            %[ imgSide, labSide, overlaySide ] = sideSliceProjection( img, imgMIPZH, lab, options.input.pixelSize);
+            [ imgSide, labSide, overlaySide ] = sideSliceProjection( img, imgMIPZH, lab, options.input.pixelSize, center3D, principalAxesList3D, axesDimensionsList3D );
+            % Side-slice projection + analyzable depth labeled as a plot
+            % Add lines/points showing the maximal intensity, center, and analyzable depth
+            clear img;
+            % Perform measurements on spheroid 2D masks and their ellipses.
+            msr = ellipsoidValidationMeasurements( imgMIPZ, imgMIPZH, lab, labEllipse, options.input.pixelSize );
     end
-    % Fitting of ellipsoids to the lab image
-    [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, centerProfiles, spheroidIndexStart, spheroidIndexStop] = fitSpheroidAxes(img, imgMIPZ, imgMIPZH, lab, options.input.pixelSize, options.ellipsoidFit.centerMethod, options.ellipsoidFit.zRadiusMethod);
-    % rad
-    radialProfiles = [];
-% %    if ( exist( 'option.ellipsoidFit.radialProfiles', 'var' ) )
-%         if ( options.ellipsoidFit.radialProfiles )
-%             radialProfiles = spheroidRadialIntensityCurves2D( img, lab > 0, options.input.pixelSize);
-%             dipshow(radialProfiles);
-%         end
-% %    end
-    % Derive a valid range for the depth of the spheroid, which can be
-    % used for the spot detection without missing any spots, from the 
-    % intensity profiles through the spheroid centers
-    [profileStop, profileStopRange, depthPercentage, depthType] = analyseAttenuationProfile(center3D(:,3), centerProfiles, spheroidIndexStart, spheroidIndexStop, options.attenuationAnalysis.profileAttenuationRatio );
-    % Plotting the middle slices of the spheroids of the top projection, add the ellipse contours, and construct a mosaic image
-    [imgSH, labTop, overlayTop] = topSliceProjection( img, lab, center3D, principalAxesList3D, axesDimensionsList3D);
-    % Plotting the middle slices of the spheroids of the side projection, add the ellipse contours, and construct a mosaic image
-    %[ imgSide, labSide, overlaySide ] = sideSliceProjection( img, imgMIPZH, lab, options.input.pixelSize);
-    [ imgSide, labSide, overlaySide ] = sideSliceProjection( img, imgMIPZH, lab, options.input.pixelSize, center3D, principalAxesList3D, axesDimensionsList3D );
-    % Side-slice projection + analyzable depth labeled as a plot
-    % Add lines/points showing the maximal intensity, center, and analyzable depth
-    %%
-%    p.PaperUnits = 'inches';
-%    p.PaperPosition = [0 0 6 3];
-%    p.PaperPositionMode = 'manual';
-   
-    %set(gca,'ydir','normal');
-%    hold off;
-    %%
-
-    clear img;
-    % Perform measurements on spheroid 2D masks and their ellipses.
-    msr = ellipsoidValidationMeasurements( imgMIPZ, imgMIPZH, lab, labEllipse, options.input.pixelSize );
-
     imgSpheroids = imgMIPZ;
 
 %% LOAD THE SPOTS IMAGE
@@ -174,7 +174,6 @@ function [ msra, lab, labEllipse, imgSpheroids, spotTable, imgSpots, radialProfi
     % Load image data from microscopy files
     tstart = tic;
     channelId = options.input.channelIdSpots;
-    disp('ChannelId = ');disp(channelId)
     img = loadMicroscopeImageStack( options.input.imageDir, options.input.fileName, channelId, options.input.seriesId, options.input.imageMicroscopeFormat );
     tstop = toc(tstart);
     fprintf('Processing time LoadImage = %i\n', tstop);
@@ -201,11 +200,21 @@ function [ msra, lab, labEllipse, imgSpheroids, spotTable, imgSpots, radialProfi
     [spotTable(:).spheroidCenter_1] = zz{:};
     [spotTable(:).spheroidCenter_2] = zz{:};
     [spotTable(:).spheroidCenter_3] = zz{:};
+    [spotTable(:).contourDist] = zz{:};
+    [spotTable(:).contourDistUnit] = zz{:};
     for k = 1:nSpheroids
-        %if (msr.size <  options.attenuationAnalysis.spheroidRadiusThreshold)
-        %    spotCount3D(k) = spotCount2D(k);
-        %else
-            ind = [outputMaxima(:).inputLabIndex] == k;
+        ind = [outputMaxima(:).inputLabIndex] == k;
+
+        if ( max(ind) > 0 )
+
+            distmask = (lab == k);
+            dist = dt(distmask);
+            listDist = dip_array( dist( sub2ind( dist, [spotTable(ind).x; spotTable(ind).y]' ) ) );
+            zz = num2cell( listDist );
+            [spotTable(ind).contourDist] = zz{:};
+            zz = num2cell( listDist * pixelSize(1) );
+            [spotTable(ind).contourDistUnit] = zz{:};
+
             spotCount3D(k) = sum( center3D(k,3) > [spotTable(ind).z] ) + sum( center3D(k,3) >= [spotTable(ind).z] );
 
             zz = num2cell( center3D(k,1) * ones(sum(ind), 1) );
@@ -223,7 +232,7 @@ function [ msra, lab, labEllipse, imgSpheroids, spotTable, imgSpots, radialProfi
                + (double([spotTable(ind).z]) - double(center3D(k,3))).^2 * pixelSize(3)^2 ...
             ) );
             [spotTable(ind).spotRadius3D] = zz{:};
-        %end
+        end
     end
     spotCount2Drep = repmat(spotCount2D, [1 size(depthPercentage(1,:))]);
     spotCount3Drep = repmat(spotCount3D, [1 size(depthPercentage(1,:))]);
@@ -272,23 +281,27 @@ function [ msra, lab, labEllipse, imgSpheroids, spotTable, imgSpots, radialProfi
         msra(j,:).spotCount = spotCount(j,:);
         msra(j,:).profileAttenuationRatio = options.attenuationAnalysis.profileAttenuationRatio;
         msra(j,1).imageId = imageId;
+        if strcmp( options.segmentation.segmentationMethod, 'manual')
+            C = strsplit(roi{1,j}.strName,'_');
+            msra(j,1).roiName = roi{1,j}.strName;
+            msra(j,1).roiType = char(C{2});
+            msra(j,1).roiLabel = str2double(char(C{1}))+1;
+        end
     end
     tstop = toc(tstart);
     fprintf('Processing time preparing measurements = %i\n', tstop);
     %
     subStruct.name = {'n'}; subStruct.value = {imageId}; subStruct.type = {'int'};
-    for j = 1:length(options.output.msr)
-        if (options.output.msr{j}.write)
-            regexString = options.output.msr{j}.pattern;
-            fprintf('Saving measurements (%s)\n', options.output.msr{j}.format);
-            tstart = tic;
-            if ~exist(options.output.msr{j}.dir, 'dir')
-                mkdir(pwd, options.output.msr{j}.dir);
-            end
-            saveMeasurements( msra, fullfile( options.output.msr{j}.dir, getGeneralName(subStruct, regexString)), options.output.msr{j}.format )
-            tstop = toc(tstart);
-            fprintf('Saving time measurements (%s) = %i\n', options.output.msr{j}.format, tstop);
+    if (options.output.msr.write)
+        regexString = options.output.msr.pattern;
+        fprintf('Saving measurements (%s)\n', options.output.msr{j}.format);
+        tstart = tic;
+        if ~exist(options.output.msr.dir, 'dir')
+            mkdir(pwd, options.output.msr.dir);
         end
+        saveMeasurements( msra, fullfile( options.output.msr.dir, getGeneralName(subStruct, regexString)), options.output.msr.format )
+        tstop = toc(tstart);
+        fprintf('Saving time measurements (%s) = %i\n', options.output.msr{j}.format, tstop);
     end
 
 %% PREPARING AND SAVING OUTPUT IMAGES

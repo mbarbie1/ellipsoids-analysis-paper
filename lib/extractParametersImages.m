@@ -1,10 +1,53 @@
 function [ pixelSize, imgSize, channelIdNuclei, channelIdSpheroids, channelIdSpots, sampleId, seriesId, imageDir, fileName, filePath ] = extractParametersImages(dataTable, fctOps)
-
+% -----------------------------------------------------------------------
+% 
+% FUNCTION: Extract the parameters from the table with sample descriptions,
+%           the necessary values which should be specified in a column are
+%           the following:
+%
+%       ------------------------------------------------------------------
+%               Column Header   |   Example value           |   Data type
+%       ------------------------------------------------------------------
+%               sampleId        | 2                         | integer
+%               seriesId        | 1,2,3... or []            | integer
+%               imageId         | 23                        | integer
+%               pixelSizeX      | 0.723                     | double
+%               pixelSizeY      | 0.723                     | double
+%               pixelSizeZ      | 5                         | double
+%               sizeX           | 512                       | integer
+%               sizeY           | 512                       | integer
+%               sizeZ           | 50                        | integer
+%               channels        | 4,1,2,3                   | comma separated string
+%               stains          | EdU,DAPI,RFP,YFP          | comma separated string
+%               imageDir        | 'c:/data/stack1'          | string
+%               imageFileName   | 'image_PC3'               | string
+%        ----------------------------------------------------------------- 
+%
+% AUTHOR: 
+% 
+% 	Michaël Barbier
+%   mbarbie1@its.jnj.com
+% 
+% -----------------------------------------------------------------------
+%
         imageId = fctOps.input.imageId;
-        pixelSize = [ dataTable.pixelSizeX(imageId),dataTable.pixelSizeY(imageId), dataTable.pixelSizeZ(imageId) ];
-        imgSize = [ dataTable.sizeX(imageId),dataTable.sizeY(imageId), dataTable.sizeZ(imageId) ];
+        row = find(dataTable.imageId == imageId, 1, 'first');
         try
-            channels = dataTable.channels(imageId);
+            pixelSize = [ dataTable.pixelSizeX(row),dataTable.pixelSizeY(row), dataTable.pixelSizeZ(row) ];
+            imgSize = [ dataTable.sizeX(row),dataTable.sizeY(row), dataTable.sizeZ(row) ];
+        catch
+            warning('extractParametersImages::No definitions in samples table for the pixel size and image size. Trying to extract pixel size and image size from OME metadata using bioformats')
+            try
+                [meta, ~] = getOmeMeta(dataTable.imageFilePath(row));
+                pixelSize = [ meta.pixelSizeX, meta.pixelSizeY, meta.pixelSizeZ ];
+                imgSize = [ meta.sizeX, meta.sizeY, meta.sizeZ ];
+            catch
+                warndlg('No definitions for the pixel size and image size found in samples table nor in the image metadata using bioformats')
+                error('extractParametersImages::Cannot extract the pixel size and image size from OME metadata using bioformats')
+            end
+        end
+        try
+            channels = dataTable.channels(row);
             channels = channels{1};
         catch
         end
@@ -19,7 +62,7 @@ function [ pixelSize, imgSize, channelIdNuclei, channelIdSpheroids, channelIdSpo
             % channel-ids are defined in image description file
             channelsSplit = strsplit(channels,',');
             channels = cellfun(@str2num, channelsSplit);
-            stains = dataTable.stains(imageId);
+            stains = dataTable.stains(row);
             stains = stains{1};
             channelIdSpheroids = channels( find( regexpcmp( strsplit(stains,','), fctOps.input.spheroidSegmentationChannel ) ) );
             channelIdNuclei = channels( find( regexpcmp( strsplit(stains,','), fctOps.input.nucleiSegmentationChannel ) ) );
@@ -35,22 +78,22 @@ function [ pixelSize, imgSize, channelIdNuclei, channelIdSpheroids, channelIdSpo
             end
         end
 
-        imageDir = dataTable.imageDir(imageId);
+        imageDir = dataTable.imageDir(row);
         imageDir = imageDir{1};
-        filePath = dataTable.imageFilePath(imageId);
+        filePath = dataTable.imageFilePath(row);
         filePath = filePath{1};
         try
-            fileName = dataTable.imageFileName(imageId);
+            fileName = dataTable.imageFileName(row);
             fileName = fileName{1};
         catch
             fileName = filePath;
         end
         try
-            seriesId = dataTable.seriesId(imageId);
+            seriesId = dataTable.seriesId(row);
         catch
             warning('no seriesId found');
             seriesId = [];
         end
         
-        sampleId = dataTable.sampleId(imageId);
+        sampleId = dataTable.sampleId(row);
 end

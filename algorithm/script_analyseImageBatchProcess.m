@@ -36,7 +36,7 @@
 %
 %
 %
-% 
+%
 % AUTHOR: 
 %
 % 	Michaël Barbier
@@ -45,7 +45,7 @@
 % ----------------------------------------------------------------------- 
 %
     clear
-    fprintf('Starting script\n');
+    fprintf('Starting script analyseBatchProcess \n');
     tstartTotal = tic;
 
 %% LOADING LIBRARIES
@@ -68,8 +68,11 @@
    % options = loadjson('input/optionsBatchProcess_Kjersti_floaters_ToPRO.json');
    % options = loadjson('input/optionsBatchProcess_Kristin_floaters.json');
    % options = loadjson('input/optionsBatchProcess_Marta.json');
-   options = loadjson('input/optionsBatchProcess_Marta_20x.json');
-   % options = loadjson('input/optionsBatchProcess_Kristin_embedded_fixed.json');
+   %options = loadjson('input/optionsBatchProcess_Marta_manual_10x.json');
+   %options = loadjson('input/optionsBatchProcess_Vitor_manual_10x.json');
+   % options = loadjson('input/optionsBatchProcess_Kjersti_embedded.json');
+   options = loadjson('input/optionsBatchProcess_Kristin_embedded_fixed_all.json');
+   % options = loadjson('input/optionsBatchProcess_Kristin_embedded_live.json');
 
 %% IMPORT SAMPLES
 
@@ -98,6 +101,14 @@
         j = j + 1;
         clearvars -except images imageId options tstartTotal data j msra spotTable imageSummary
 
+        if strcmp(options.segmentation.segmentationMethod, 'manual')
+            subStruct.name = {'n'}; subStruct.value = {imageId}; subStruct.type = {'int'};
+            regexString = options.input.roiPattern;
+            ROIFilename = getGeneralName(subStruct, regexString);
+            ROIImageDir = options.input.roiDir;
+            roi = ReadImageJROI( fullfile(ROIImageDir, ROIFilename) );
+        end
+        
         %% PER IMAGE PARAMETERS
         options.input.imageId = imageId;
         [ options.input.pixelSize, options.input.size, options.input.channelIdNuclei, ...
@@ -105,9 +116,6 @@
             options.input.sampleId, options.input.seriesId,...
             options.input.imageDir, options.input.fileName, options.input.filePath ]...
             = extractParametersImages(data.parTable, options);
-        options.input.channelIdSpots
-        options.input.imageDir
-        options.input.filePath
 
         %% IMAGE ANALYSIS
         disp(options.input.fileName)

@@ -1,14 +1,12 @@
-function [mip, mipH, lab, imgContour] = manualSegmentation2D( img, roi, colorType, fctOps )
+function [mip, mipH, lab, imgContour, roi] = manualSegmentation2D( img, roi, fctOps )
 
-
-    
 %%% MIP and heightmap projections
 
     [mip, mipH] = max(img,[],3);
     clear img;
     mip = squeeze(mip);
     mipH = squeeze(mipH);
-  
+
 %%% 2D SEGMENTATION FROM ROI
 
     minSpheroidArea = round( pi * ( fctOps.minRadius/fctOps.pixelSize(1) )^2 );
@@ -16,7 +14,7 @@ function [mip, mipH, lab, imgContour] = manualSegmentation2D( img, roi, colorTyp
     n = length(roi);
     % segmentation measurements
     msrFields = {'size','center','Maximum','Minimum','Radius','ConvexArea','P2A','Feret','PodczeckShapes',...
-        'mean','StdDev','MinVal','MaxVal','Skewness','ExcessKurtosis'};
+        'mean','StdDev','MinVal','MaxVal','Skewness','ExcessKurtosis', 'MajorAxes', 'DimensionsEllipsoid'};
     imgCell = {mip};
 
     %colorType = struct(...
@@ -38,11 +36,16 @@ function [mip, mipH, lab, imgContour] = manualSegmentation2D( img, roi, colorTyp
     %   roi{j}.pAbs: absolute coordinates of the contour
     %   roi{j}.img: cell array of sub-images (mip, heightmap, ...) 
     %   roi{j}.msr: measurements
-    roi = roiToMasks_RoiManager(roi, imgCell, colorType, msrFields);
+    roi = roiToMasks_RoiManager_nameBased(roi, imgCell, mipH, msrFields);
     lab = roiToLab_RoiManager(roi, imsize(mip));
 
 %%% OUTPUT CONTOUR
 %    imgContour = createContourOverlay( stretch(imgMIPZ,1,99), lab );
-    imgContour = createContourOverlay( stretch(mip), lab );
-
+%    imgContour = createContourOverlay( stretch(mip), lab );
+    imgContour = stretch(mip);
+    contourLab = newim(size(imgContour));
+    for k = 1:n
+        contourLab( sub2ind( contourLab, roi{k}.pAbs-1 ) ) = k;
+    end
+    imgContour = overlay(imgContour, contourLab);
 end

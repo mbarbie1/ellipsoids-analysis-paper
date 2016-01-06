@@ -1,3 +1,4 @@
+function lab = segmentHeightMap2D( imgMIPZ, imgMIPZH, pixelSize, minRadius, neighbourhoodRadius, maxRangeZ, removeBorderObjectsInPlane, removeBorderObjectsInZ, borderZRemoveMethod, thresholdIntensity)
 % -----------------------------------------------------------------------
 % 
 % FUNCTION: segmentHeightMap2D
@@ -58,7 +59,6 @@
 % 
 % ----------------------------------------------------------------------- 
 %
-function lab = segmentHeightMap2D( imgMIPZ, imgMIPZH, pixelSize, minRadius, neighbourhoodRadius, maxRangeZ, removeBorderObjectsInPlane, removeBorderObjectsInZ, borderZRemoveMethod, thresholdIntensity)
 
     fprintf('Process: segmentHeightMap2D\n');
     tic;

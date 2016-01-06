@@ -1,7 +1,16 @@
 function [img, meta] = loadMicroscopeImageStack( imageDir, fileName, channelId, seriesId, imageMicroscopeFormat )
-
+% -----------------------------------------------------------------------
+% 
+% FUNCTION: Loads an image stacks from a file(s)
+% 
+% AUTHOR: 
+% 
+% 	Michaël Barbier
+%   mbarbie1@its.jnj.com
+% 
+% -----------------------------------------------------------------------
+%
     % Load image data from microscopy files
-    disp(fullfile(imageDir, fileName))
     if ( nargout < 2 )
         switch imageMicroscopeFormat
             case 'cv7000'
@@ -13,7 +22,8 @@ function [img, meta] = loadMicroscopeImageStack( imageDir, fileName, channelId, 
             case 'Opera'
                 img = readImageStack( fullfile(imageDir, fileName), channelId, 1, seriesId);
             otherwise
-                warning('Unknown imageMicroscopeFormat');
+                warning('Unknown imageMicroscopeFormat, using default');
+                img = readImageStack( fullfile(imageDir, fileName), channelId, 1, seriesId);
         end
     else
         switch imageMicroscopeFormat
@@ -28,7 +38,8 @@ function [img, meta] = loadMicroscopeImageStack( imageDir, fileName, channelId, 
             case 'Opera'
                 [img, meta] = readImageStack( fullfile(imageDir, fileName), channelId, 1, seriesId);
             otherwise
-                warning('Unknown imageMicroscopeFormat');
+                warning('Unknown imageMicroscopeFormat, using default');
+                img = readImageStack( fullfile(imageDir, fileName), channelId, 1, seriesId);
         end
     end
 

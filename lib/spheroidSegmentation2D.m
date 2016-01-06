@@ -1,4 +1,20 @@
 function [imgMIPZ, imgMIPZH, lab, imgContour] = spheroidSegmentation2D( img, fctOps )
+% -----------------------------------------------------------------------
+% 
+% FUNCTION: Segmentation algorithm for 3D image stacks using the 2D MIP or/ 
+%           and the height view of the stack. Options for the algorithms
+%           are "simple thresholding", "heightmap homogeneity based",
+%           "heightmap homogeneity with gray-values", "hessian eigenvalues
+%           based.
+% 
+% AUTHOR: 
+% 
+% 	Michaël Barbier
+%   mbarbie1@its.jnj.com
+% 
+% -----------------------------------------------------------------------
+%
+
 
 %%% MIP and heightmap projections
 
@@ -23,6 +39,21 @@ function [imgMIPZ, imgMIPZH, lab, imgContour] = spheroidSegmentation2D( img, fct
             lab = label( mask, inf, minSpheroidArea, 0 );
         case 'heightmap'
             t = 0;
+            % AUTOMATIC COMPUTATION OF PARAMETERS
+            if (neighbourhoodRadiusAutomatic)
+                % TODO: add a more useful derived value
+                fctOps.neighbourhoodRadius = 3.1 * fctOps.pixelSize(1);
+            end
+            if (maxRangeZAutomatic)
+                kernelSize = 2 * max( 1, round( neighbourhoodRadius / pixelSize(1) ) )  +  1;
+                minH = min(imgMIPZH);
+                maxH = max(imgMIPZH);
+                img_range = dip_image( rangefilt( dip_array(imgMIPZH), true(kernelSize) ) );
+                diphist(img_range,'all');
+                [histH,binsH] = diphist(img_range,'all');
+                [locPeaks, hPeaks, wPeaks] = slowLocalMaxima(histH); 
+                fctOps.maxRangeZ = 2;
+            end
             lab = segmentHeightMap2D( ...
                 imgMIPZ, imgMIPZH, fctOps.pixelSize, fctOps.minRadius, ...
                 fctOps.neighbourhoodRadius, fctOps.maxRangeZ, ...
@@ -59,5 +90,12 @@ function [imgMIPZ, imgMIPZH, lab, imgContour] = spheroidSegmentation2D( img, fct
 
 %    imgContour = createContourOverlay( stretch(imgMIPZ,1,99), lab );
     imgContour = createContourOverlay( stretch(imgMIPZ), lab );
+
+end
+
+function [xPeaks, yPeaks, wPeaks, atBorder] = slowLocalMaxima(x)
+
+    xLeft = x(2:end)-x(1:(end-1));
+    xPeaks
 
 end

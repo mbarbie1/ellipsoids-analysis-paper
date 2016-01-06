@@ -1,6 +1,45 @@
-%[labEllipse, center3D, principalAxesList3D, axesDimensionsList3D] = fitSpheroidAxes(imgMIPZ, imgMIPZH, lab, pixelSize, fctOps.centerMethod, fctOps.zRadiusMethod);
 function [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, cprof2D, spheroidIndexStart, spheroidIndexStop] = fitSpheroidAxes(imgOri, img, imgH, lab, pixelSize, centerMethod, zRadiusMethod)
-
+% -----------------------------------------------------------------------
+% 
+% FUNCTION: fitSpheroidAxes
+% 
+% DESCRIPTION: 
+% 
+% INPUT: 
+%           imgOri                    : original 3D image stack channel 
+%                                       (DIPimage 3D image)
+%           img                       : MIP (DIPimage 2D image)
+%           imgH                      : z-buffer of the MIP (DIPimage 2D
+%           lab                       : labeled image of the segmentation
+%                                           image)
+%           pixelSize                 : pixel size in x,y,z (vector)
+%           centerMethod              : minimal radius (in micron) of the
+%           zRadiusMethod             : minimal radius (in micron) of the
+%
+% OUTPUT:
+%           labEllipse                : a labeled image of the ellipse (2D)
+%           center3D                  : center coordinates of the
+%                                       ellipsoids nx3 matrix
+%           principalAxesList3D       : double list {n}x{3}x3 containing
+%                                       the principal axes coordinates in
+%                                       3D for the 3 axes.
+%           axesDimensionsList3D      : List {n}x3 with the dimensions of
+%                                       the 3 axes for each ellipsoid
+%           cprof2D                   : list {n}x(sizeZ) with the profile
+%                                       curves through the center of the
+%                                       ellipsoids
+%           spheroidIndexStart        : lowest index of z-coordinates of
+%                                       the ellipsoid (n array)
+%           spheroidIndexStop         : highest index of z-coordinates
+%                                       of the ellipsoid (n array)
+%
+% AUTHOR: 
+% 
+% 	Michaël Barbier
+%   mbarbie1@its.jnj.com
+% 
+% ----------------------------------------------------------------------- 
+%
     fprintf('Process: fitSpheroidAxes\n');
     tic;
 
@@ -10,6 +49,7 @@ function [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, cprof
     % image
     cprof = [];
     %cprof2D = [];
+    
     msr = measure(lab, img, {'MajorAxes', 'DimensionsEllipsoid', 'center'});
     if ( length(msr) > 0 )
         n = length(msr.MajorAxes(1,:));
@@ -72,8 +112,6 @@ function [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, cprof
         for k = 1:n
             extendRadiusPerc = 0.2;
             extendRadius = max(1, round( extendRadiusPerc * min(axesDimensionsList{k}) ) );
-            disp('extendRadius:')
-            disp(extendRadius)
             lowerXBound = center3D( k, 1 ) - extendRadius;
             upperXBound = center3D( k, 1 ) + extendRadius;
             lowerYBound = center3D( k, 2 ) - extendRadius;
@@ -197,6 +235,6 @@ function [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, cprof
     end
     
     endTime = toc();
-    fprintf('fitSpheroidAxes: time duration: %s\n', num2str(endTime));
+    fprintf('fitSpheroidAxes: time duration = %s\n', num2str(endTime));
 
 end

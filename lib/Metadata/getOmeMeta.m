@@ -9,7 +9,7 @@ function [meta, omeMeta] = getOmeMeta(imgPath, metaInput)
             meta = defaultMeta();
     end
 
-    disp(imgPath)
+    %disp(imgPath)
     try 
         reader = bfGetReader(imgPath);
         omeMeta = reader.getMetadataStore();

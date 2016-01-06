@@ -1,3 +1,4 @@
+function lab = segmentGreyHeightMap2D( imgMIPZ, imgMIPZH, pixelSize, minRadius, neighbourhoodRadius, maxRangeZ, removeBorderObjectsInPlane, removeBorderObjectsInZ, borderZRemoveMethod, thresholdIntensity, minP)
 % -----------------------------------------------------------------------
 % 
 % FUNCTION: segmentHeightMap2D
@@ -16,10 +17,10 @@
 %               the MIP. The homogeneity of the z-buffer is taken to be the
 %               measure to distinguish between foreground and background.
 %               This measure is calculated by applying a range filter to
-%               the z-buffer and thresholding the resulting image.
-%               Afterwards this mask is labeled and the intensity of the
-%               MIP is compared where labeled objects with an intensity
-%               below 'thresholdIntensity' are removed.
+%               the z-buffer. The homogeneity measure is multiplied by the
+%               normalized mip intensity values to obtain a probability of
+%               foreground, afterwards this probability is thresholded.
+%               Then this mask is labeled.
 % 
 % INPUT: 
 %           imgMIPZ                     : MIP (DIPimage 2D image)
@@ -59,8 +60,6 @@
 % 
 % ----------------------------------------------------------------------- 
 %
-function lab = segmentGreyHeightMap2D( imgMIPZ, imgMIPZH, pixelSize, minRadius, neighbourhoodRadius, maxRangeZ, removeBorderObjectsInPlane, removeBorderObjectsInZ, borderZRemoveMethod, thresholdIntensity, minP)
-
     kernelSize = 2 * max( 1, round( neighbourhoodRadius / pixelSize(1) ) )  +  1;
     disp(kernelSize);
     maxRangeZPixels = max( 1 + 0.0001, maxRangeZ / pixelSize(3) );

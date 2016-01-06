@@ -1,6 +1,8 @@
-%%% Side projection with slices of spheroids at the correct depth (middle
-%%% of the spheroid
+function [ imgSide, labSide, overlaySide ] = sideSliceProjection( imgOri, imgMIPZH, lab, pixelSize, center3D, principalAxesList3D, axesDimensionsList3D )
+% ----------------------------------------------------------------------- 
 %
+% FUNCTION: Side projection with slices of spheroids at the correct depth 
+%           (middle of the spheroid)
 % 
 % AUTHOR: 
 % 
@@ -9,8 +11,6 @@
 % 
 % ----------------------------------------------------------------------- 
 %
-function [ imgSide, labSide, overlaySide ] = sideSliceProjection( imgOri, imgMIPZH, lab, pixelSize, center3D, principalAxesList3D, axesDimensionsList3D )
-
     fprintf('PostProcess: sideSliceProjection2D\n');
     tic;
 
@@ -81,5 +81,5 @@ function [ imgSide, labSide, overlaySide ] = sideSliceProjection( imgOri, imgMIP
     overlaySide = overlay( stretch(imgSide), labTemp );
 
     endTime = toc();
-    fprintf('sideSliceProjection2D: time duration: %s\n', num2str(endTime));
+    fprintf('sideSliceProjection2D: time duration = %s\n', num2str(endTime));
 end
