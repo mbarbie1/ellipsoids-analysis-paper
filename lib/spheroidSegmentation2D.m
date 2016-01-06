@@ -50,11 +50,11 @@ function [imgMIPZ, imgMIPZH, lab, imgContour] = spheroidSegmentation2D( img, fct
                 minH = min(imgMIPZH);
                 maxH = max(imgMIPZH);
                 img_range = dip_image( rangefilt( dip_array(imgMIPZH), true(kernelSize) ) );
-                diphist(img_range,'all');
+                %diphist(img_range,'all');
                 [histH,binsH] = diphist(img_range,'all');
-				disp(firstPeakWidth(histH));
+				%disp(firstPeakWidth(histH));
                 fctOps.maxRangeZ = firstPeakWidth(histH) * fctOps.pixelSize(3);
-				disp(fctOps.maxRangeZ);
+				%disp(fctOps.maxRangeZ);
             end
             lab = segmentHeightMap2D( ...
                 imgMIPZ, imgMIPZH, fctOps.pixelSize, fctOps.minRadius, ...

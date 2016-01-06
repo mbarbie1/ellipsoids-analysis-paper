@@ -1,0 +1,18 @@
+function ss = getOptimalLaplaceScale(img, minSpotScale, maxSpotScale, nScales)
+% getOptimalLaplaceScale this function determines the optimal scale of the
+% 2D image: this scale can be used for the blob detection
+
+	s = getScaleSpace(minSpotScale, maxSpotScale, nScales);
+	sumL = 0*(1:length(s));
+	for k = 1:length(s)
+		s1 = s(k);
+		s2 = s(k);
+		L = s1^2 .* dxx(img,s1) + s2^2 .* dyy(img,s2);
+		sumL(k) = sum(L);
+	end
+
+	[sMax, sIndex] = max(sumL);
+	ss = s(sIndex);
+
+end
+

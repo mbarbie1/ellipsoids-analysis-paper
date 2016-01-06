@@ -72,6 +72,7 @@ function updateGUI(fh)
     updateTablesGUI(fh);
     %updatePlotsGUI(fh);
     updateInputGUI(fh);
+	initInput(fh);
     updateWaitGUI(fh);
     updateStatusGUI(fh);
 
@@ -151,9 +152,9 @@ function initInput(fh)
     
     S = guidata(fh);
 
-	S.options.input.channelIdSpheroids = get(S.hNumericSpheroids,'Value');
-	S.options.input.channelIdNuclei = get(S.hNumericNuclei,'Value');
-	S.options.input.channelIdSpots = set(S.hNumericSpots,'Value');
+	set(S.hNumericSpheroids,'Value', S.options.input.defaultChannelIdSpheroids);
+	set(S.hNumericNuclei,'Value', S.options.input.defaultChannelIdNuclei);
+	set(S.hNumericSpots,'Value', S.options.input.defaultChannelIdSpots);
 
     guidata(fh,S);
 
@@ -364,7 +365,6 @@ function updateImagesGUI(fh)
 end
 
 function updatePlotsGUI(fh)
-
 
     S = guidata(fh);
 

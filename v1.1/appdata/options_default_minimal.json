@@ -202,7 +202,7 @@
 				"description":  "",
 				"group":        "all",
                 "type":         "numeric",
-                "automatic":     0,
+                "automatic":     1,
                 "value":         1000
 		},
         {
@@ -212,7 +212,7 @@
 				"description":  "",
 				"group":        "all",
                 "type":         "numeric",
-                "automatic":     0,
+                "automatic":     1,
                 "value":         10
 		},
         {
@@ -294,7 +294,7 @@
 				"description":  "",
 				"group":        "all",
                 "type":         "numeric",
-                "automatic":     0,
+                "automatic":     1,
                 "value":         10
 		},
 		{
@@ -342,8 +342,6 @@
     },
     "spotDetection": {
         "method":                           "2D",
-        "defaultAvgSpotRadius":             8,
-        "defaultMaxSpotRadius":             10,
         "avgSpotRadius":                    8,
         "maxSpotRadius":                    10,
         "maxSpotDetectorRatio":             0.2
