@@ -23,7 +23,7 @@ function ss = getOptimalLaplaceScale(img, minScale, maxScale, nScales, pixelSize
 	dipshow(LL);
 	
 	[sMax, sIndex] = max(sumL);
-	ss = s(sIndex);
+	ss = s(sIndex) * 2/3;
 
 end
 
