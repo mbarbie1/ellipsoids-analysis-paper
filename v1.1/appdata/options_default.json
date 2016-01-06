@@ -142,7 +142,7 @@
                 "type":         "choice",
                 "labelList":    ["Intensity Threshold", "Height View","Intensity + Height-view ","Hessian-based"],
                 "list":         ["threshold", "heightmap","grayheightmap","hessianEigenvalues"],
-                "selected":     1
+                "selected":     2
 		},
 		{
 				"category":		"segmentation",

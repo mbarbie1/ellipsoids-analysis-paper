@@ -26,7 +26,7 @@ function [ p ] = sideSliceProjectionQC( overlaySide, pixelSize, center3D, center
         [x,y] = bresenham(x1,y1,x2,y2);
         plot(x,y,'b-','linewidth',1.5); hold on;
         plot(center3D(j,1),scaleFactor*center3D(j,3),'r*'); hold on;
-        disp('maxIntensity'); disp(maxIntensityProfiles)
+        %disp('maxIntensity'); disp(maxIntensityProfiles);
         plot(center3D(j,1) + (yy / maxIntensityProfiles * sz(1)/5), scaleFactor*xx2, 'g-','linewidth',1); hold on;
     end
     axis image

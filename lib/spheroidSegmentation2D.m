@@ -25,6 +25,7 @@ function [imgMIPZ, imgMIPZH, lab, imgContour] = spheroidSegmentation2D( img, fct
 
 %%% 2D SEGMENTATION
 
+	disp(fctOps.pixelSize);
     minSpheroidArea = round( pi * ( fctOps.minRadius/fctOps.pixelSize(1) )^2 );
     switch fctOps.segmentationMethod
         case 'threshold'
@@ -40,18 +41,19 @@ function [imgMIPZ, imgMIPZH, lab, imgContour] = spheroidSegmentation2D( img, fct
         case 'heightmap'
             t = 0;
             % AUTOMATIC COMPUTATION OF PARAMETERS
-            if (neighbourhoodRadiusAutomatic)
+            if (fctOps.neighbourhoodRadiusAutomatic)
                 % TODO: add a more useful derived value
                 fctOps.neighbourhoodRadius = 3.1 * fctOps.pixelSize(1);
             end
-            if (maxRangeZAutomatic)
-                kernelSize = 2 * max( 1, round( neighbourhoodRadius / pixelSize(1) ) )  +  1;
+            if (fctOps.maxRangeZAutomatic)
+                kernelSize = 2 * max( 1, round( fctOps.neighbourhoodRadius / fctOps.pixelSize(1) ) )  +  1;
                 minH = min(imgMIPZH);
                 maxH = max(imgMIPZH);
                 img_range = dip_image( rangefilt( dip_array(imgMIPZH), true(kernelSize) ) );
                 diphist(img_range,'all');
                 [histH,binsH] = diphist(img_range,'all');
-                fctOps.maxRangeZ = firstPeakWidth(histH) * pixelSize(3);
+				disp(firstPeakWidth(histH));
+                fctOps.maxRangeZ = firstPeakWidth(histH) * fctOps.pixelSize(3);
 				disp(fctOps.maxRangeZ);
             end
             lab = segmentHeightMap2D( ...
@@ -98,7 +100,7 @@ function w = firstPeakWidth(x)
 	[xPeaks, yPeaks, atBorderPeak] = slowLocalMaxima(x);
     [xDips, yDips, atBorderDip] = slowLocalMaxima(-x); yDips = -yDips;
 	
-	w = xDips(1) - xPeaks(1);
+	w = xDips(1); %- xPeaks(1);
 
 
 end

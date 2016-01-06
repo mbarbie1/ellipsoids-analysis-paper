@@ -147,18 +147,6 @@ function updateTablesGUI(fh)
 
 end
 
-function initInput(fh)
-    
-    S = guidata(fh);
-
-	S.options.input.channelIdSpheroids = get(S.hNumericSpheroids,'Value');
-	S.options.input.channelIdNuclei = get(S.hNumericNuclei,'Value');
-	S.options.input.channelIdSpots = set(S.hNumericSpots,'Value');
-
-    guidata(fh,S);
-
-end
-
 function updateInputGUI(fh)
 
     S = guidata(fh);
@@ -535,17 +523,13 @@ function initSettings(fh)
             case 'numeric'
                 S.options.(S.options.settings{1,k}.category).(S.options.settings{1,k}.name) = S.options.settings{1,k}.value;
                 S.options.(S.options.settings{k}.category).([S.options.settings{k}.name 'Automatic']) = S.options.settings{k}.automatic;
-				set(S.hSetting{k,3},'Value',S.options.settings{1,k}.value);
-				set(S.hSetting{k,2},'Value',S.options.settings{k}.automatic);
             case 'boolean'
                 S.options.(S.options.settings{1,k}.category).(S.options.settings{1,k}.name) = S.options.settings{1,k}.value;
-				set(S.hSetting{k,2},'Value',S.options.settings{1,k}.value);
             case 'choice'
                 items = S.options.settings{1,k}.list;
                 indexSelected = S.options.settings{1,k}.selected;
                 temp = items{indexSelected};
                 S.options.(S.options.settings{k}.category).(S.options.settings{k}.name) = temp;
-				set(S.hSetting{k,2},'Value',indexSelected);
             otherwise
                 error('initSettings::Invalid parameter definition detected')
 		end
@@ -567,7 +551,7 @@ function updateSettingsGUI(fh)
     [nSettings, nS] = getNSettings(options);
     y = linspace(marginx, 1-marginx, max(nS)+1);
     y = y(1:(end-1));
-    S.hSetting = cell( nSettings, 3 );
+    S.hSettings = cell( nSettings, 3 );
 
     x = marginx;
     p = groups(find(strcmp({groups.name},'settings')));
