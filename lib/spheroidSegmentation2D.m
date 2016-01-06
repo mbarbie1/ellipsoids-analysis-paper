@@ -9,7 +9,7 @@ function [imgMIPZ, imgMIPZH, lab, imgContour] = spheroidSegmentation2D( img, fct
 % 
 % AUTHOR: 
 % 
-% 	Michaël Barbier
+% 	Michaï¿½l Barbier
 %   mbarbie1@its.jnj.com
 % 
 % -----------------------------------------------------------------------
@@ -51,8 +51,8 @@ function [imgMIPZ, imgMIPZH, lab, imgContour] = spheroidSegmentation2D( img, fct
                 img_range = dip_image( rangefilt( dip_array(imgMIPZH), true(kernelSize) ) );
                 diphist(img_range,'all');
                 [histH,binsH] = diphist(img_range,'all');
-                [locPeaks, hPeaks, wPeaks] = slowLocalMaxima(histH); 
-                fctOps.maxRangeZ = 2;
+                fctOps.maxRangeZ = firstPeakWidth(histH) * pixelSize(3);
+				disp(fctOps.maxRangeZ);
             end
             lab = segmentHeightMap2D( ...
                 imgMIPZ, imgMIPZH, fctOps.pixelSize, fctOps.minRadius, ...
@@ -93,9 +93,69 @@ function [imgMIPZ, imgMIPZH, lab, imgContour] = spheroidSegmentation2D( img, fct
 
 end
 
-function [xPeaks, yPeaks, wPeaks, atBorder] = slowLocalMaxima(x)
+function w = firstPeakWidth(x)
+	
+	[xPeaks, yPeaks, atBorderPeak] = slowLocalMaxima(x);
+    [xDips, yDips, atBorderDip] = slowLocalMaxima(-x); yDips = -yDips;
+	
+	w = xDips(1) - xPeaks(1);
 
-    xLeft = x(2:end)-x(1:(end-1));
-    xPeaks
+
+end
+	
+function [xPeaks, yPeaks, atBorder] = slowLocalMaxima(x, varargin)
+
+    % Defaults
+    startSlope = 1;
+    stopSlope = -1;
+    if nargin > 1, startSlope = varargin{1};end
+    if nargin > 2, stopSlope = varargin{2};end
+
+
+    dLeft = -[startSlope,x(2:end)-x(1:(end-1))];
+    dRight = -[-x(2:end)+x(1:(end-1)),-stopSlope];
+    xPeaksTemp = find( double( dLeft < 0 & dRight < 0 ) );
+    yPeaksTemp = x( dLeft < 0 & dRight < 0 );
+    xQ = double( dLeft == 0 & dRight == 0 );
+    xQL = double( dLeft < 0 & dRight == 0 );
+    xQR = double( dLeft == 0 & dRight < 0 );
+    ll = 0*xQ;
+
+
+    d = 0;
+    flatR = 0;
+    maxLocation = [];
+    maxLocationInteger = [];
+    maxValue = [];
+
+    for i = 2:length(x)
+
+        if ( ( xQR(i) && xQL(i-1) ) )
+            ll((i-1):i) = 1;
+            maxLocation(end+1) = mean( (i-1):i );
+            maxLocationInteger(end+1) = i;
+            maxValue(end+1) = x(i);
+        end
+        if ( ( xQR(i) && xQ(i-1) ) && d > 0 && flatR )
+            ll((i-d-1):i) = 1;
+            maxLocation(end+1) = mean( (i-d-1):i );
+            maxLocationInteger(end+1) = ceil( mean( (i-d-1):i ) );
+            maxValue(end+1) = x(i);
+        end
+        if ( ( xQ(i) && xQL(i-1) ) )
+            flatR = 1;
+        end
+        if ( flatR && xQ(i) )
+            d = d + 1;
+        else
+            d = 0;
+            flatR = 0;
+        end
+
+    end
+   
+    xPeaks = [xPeaksTemp, maxLocation];
+    yPeaks = [yPeaksTemp, maxValue];
+    atBorder = xPeaks == 1 | xPeaks == length(x);
 
 end

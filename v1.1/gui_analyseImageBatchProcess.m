@@ -5,7 +5,7 @@ function [] = gui_analyseImageBatchProcess()
     % External libs
     addpath(genpath('../libExternal'));
 % LOAD DEFAULT OPTIONS
-    options = loadjson('input/options_default.json');
+    options = loadjson('appdata/options_default.json');
 
 % INITIALIZE DEFAULT GUI
     fh = generateGUI(options);
@@ -20,7 +20,8 @@ function loadDIPimage(fh)
 
     S = guidata(fh);
     try
-        run('C:\Program Files\DIPimage 2.6\dipstart.m');
+        dip_initialise();
+		%run('C:\Program Files\DIPimage 2.6\dipstart.m');
         S.dipimageLoaded = true;
     catch e
         wrndlg('DIPimage could not be loaded.');

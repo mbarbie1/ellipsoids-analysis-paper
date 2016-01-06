@@ -1,4 +1,4 @@
-function w = testPeaks()
+function testPeaks()
 
     x = [25,25,25,24,25,24,23,18,15,14,20,23,10,11,10,10,12,11,9,6,7,6,5,5,5,5,4,3,2,1,1,1,1,1,1,3,4,5,6,7,8,8,8,8,8,6,5,4,2,3,6,7,12,13,11,10,11,15,17];
     %x = [3,3,3,2,1,2,3,4,4,4,5,6,6,6,6,6,6,4,4,4,5,6,7,7,7,4,4,4,2,1];
@@ -17,8 +17,6 @@ function w = testPeaks()
     scatter(locs, pks);hold on;
     scatter(xPeaks, yPeaks, 10);hold on;
     scatter(xDips, yDips, 20);hold off;
-	
-	w = xDips(1) - xPeaks(1);
 end
 
 function [xPeaks, yPeaks, atBorder] = slowLocalMaxima(x, varargin)
