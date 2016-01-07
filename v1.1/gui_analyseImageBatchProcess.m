@@ -70,7 +70,7 @@ function updateGUI(fh)
     initSettings(fh);
     updateImagesGUI(fh);
     updateTablesGUI(fh);
-    %updatePlotsGUI(fh);
+    updatePlotsGUI(fh);
     updateInputGUI(fh);
 	initInput(fh);
     updateWaitGUI(fh);
@@ -383,7 +383,7 @@ function updatePlotsGUI(fh)
 
     S.hPlot = cell( length(y), 5 );
     style = {'checkbox', 'text', 'text', 'edit','popupmenu'};
-    w = [ 0.05, 0.2, 0.2, 0.2, 0.1 ];
+    w = [ 0.05, 0.3, 0.3, 0.2, 0.1 ];
     h = 1/(getNPlots(options)+1);
 
     if (S.nPlots > 0)
@@ -710,15 +710,15 @@ function [ winx, winy, winw, winh, groups, buttonh, marginx ] = getWindowSpecifi
     marginy = 0.02;
 
     nPlots = getNPlots(options);
-    nPlots = 3;
+    nInput = 3;
     nTables = getNTables(options);
     nImages = getNImages(options);
-    nTotalH = nPlots + nTables + nImages + 6 * marginy + 6;
+    nTotalH = nInput + nPlots + nTables + nImages + 8 * marginy + 8;
     outputFilesH = 0.5;
-    plotsH = outputFilesH * ( nPlots + 2 + 2*marginy ) / nTotalH;
-    imagesH = outputFilesH * ( nImages + 2 + 2*marginy ) / nTotalH;
-    tablesH = outputFilesH * ( nTables + 2 + 2*marginy ) / nTotalH;
-    inputH = plotsH;
+    inputH = outputFilesH * ( nInput + 2 + 3*marginy ) / nTotalH;
+    plotsH = outputFilesH * ( nPlots + 2 + 3*marginy ) / nTotalH;
+    imagesH = outputFilesH * ( nImages + 2 + 3*marginy ) / nTotalH;
+    tablesH = outputFilesH * ( nTables + 2 + 3*marginy ) / nTotalH;
     
     h = 0.1;
     buttonw = 0.1;
@@ -772,6 +772,14 @@ function [ winx, winy, winw, winh, groups, buttonh, marginx ] = getWindowSpecifi
     groups(j).description = '';
     y = y + groups(j).h; j = j+1;
 
+% Plots
+    groups(j).h = plotsH;
+    groups(j).position = [marginx,y,1-2*marginx,groups(j).h];
+    groups(j).name = 'output plots';
+    groups(j).label = 'Output plots';
+    groups(j).description = '';
+    y = y + groups(j).h; j = j+1;
+
 % Status of the inputs    
     groups(j).h = inputH;
     groups(j).position = [1-marginx-wStatus,y,wStatus,groups(j).h];
@@ -788,13 +796,6 @@ function [ winx, winy, winw, winh, groups, buttonh, marginx ] = getWindowSpecifi
     groups(j).description = '';
     y = y + groups(j).h; j = j+1;
 
-% Plots
-    groups(j).h = plotsH;
-    groups(j).position = [marginx,y,1-2*marginx,groups(j).h];
-    groups(j).name = 'output plots';
-    groups(j).label = 'Output plots';
-    groups(j).description = '';
-    y = y + groups(j).h; j = j+1;
 
 
 end

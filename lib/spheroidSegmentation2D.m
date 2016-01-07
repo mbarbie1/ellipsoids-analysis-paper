@@ -99,7 +99,7 @@ function w = firstPeakWidth(x)
 	
 	[xPeaks, yPeaks, atBorderPeak] = slowLocalMaxima(x);
     [xDips, yDips, atBorderDip] = slowLocalMaxima(-x); yDips = -yDips;
-	
+
 	w = xDips(1); %- xPeaks(1);
 
 

@@ -39,6 +39,13 @@
                 "dir":			"output/default/images",
 				"pattern":		"plot_overlaySide_[nnnn].png",
 				"format":		"png"
+			},
+			{
+				"name":			"plotSpotsScale",
+                "write":        0,
+                "dir":			"output/default/images",
+				"pattern":		"plot_spotsScale_[nnnn].png",
+				"format":		"png"
 			}
         ],
 		"images": [
@@ -69,8 +76,8 @@
 				"label":    	"Ellipse overlay top projection",
                 "write":        1,
                 "dir":			"output/default/images",
-				"pattern":		"overlayTop_[nnnn].tif",
-				"format":		"tif",
+				"pattern":		"overlayTop_[nnnn].png",
+				"format":		"png",
 				"bitDepth":		"uint8",
 				"color":		"rgb",
 				"ioMethod":		"Matlab"
@@ -80,8 +87,8 @@
 				"label":    	"Ellipse overlay side projection",
                 "write":        1,
                 "dir":			"output/default/images",
-				"pattern":		"overlaySide_[nnnn].tif",
-				"format":		"tif",
+				"pattern":		"overlaySide_[nnnn].png",
+				"format":		"png",
 				"bitDepth":		"uint8",
 				"color":		"rgb",
 				"ioMethod":		"Matlab"
@@ -91,8 +98,8 @@
 				"label":    	"Contour spheroids overlay MIP",
                 "write":        1,
                 "dir":			"output/default/images",
-				"pattern":		"contour_[nnnn].tif",
-				"format":		"tif",
+				"pattern":		"contour_[nnnn].png",
+				"format":		"png",
 				"bitDepth":		"uint8",
 				"color":		"rgb",
 				"ioMethod":		"Matlab"
@@ -102,8 +109,8 @@
 				"label":    	"Spots overlay MIP",
                 "write":        1,
                 "dir":			"output/default/images",
-				"pattern":		"contourSpots2D_[nnnn].tif",
-				"format":		"tif",
+				"pattern":		"contourSpots2D_[nnnn].png",
+				"format":		"png",
 				"bitDepth":		"uint8",
 				"color":		"rgb",
 				"ioMethod":		"Matlab"

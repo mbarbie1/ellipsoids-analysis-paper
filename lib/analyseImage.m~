@@ -188,8 +188,11 @@ function [ msra, lab, labEllipse, imgSpheroids, spotTable, imgSpots, radialProfi
     imgMIPZH = squeeze(imgMIPZH);
 	
 	if (options.spotDetection.avgSpotRadiusAutomatic)
-		options.spotDetection.defaultAvgSpotRadius = 
-		options.spotDetection.avgSpotRadius = optimalLaplaceScale()
+		nScale = 32;
+		minSpotScale = max(2*pixelSize(1), options.spotDetection.defaultAvgSpotRadius / 8);
+		maxSpotScale = options.spotDetection.defaultAvgSpotRadius * 8;
+		[options.spotDetection.avgSpotRadius, scalePlot] = getOptimalLaplaceScale(imgMIPZ, minSpotScale, maxSpotScale, nScale, pixelSize) * 2/3;
+		scalePlot;
 	end
 	if (options.spotDetection.maxSpotRadiusAutomatic)
 		options.spotDetection.maxSpotRadius = 1.5 * options.spotDetection.avgSpotRadius;

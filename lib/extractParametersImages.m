@@ -35,24 +35,24 @@ function [ pixelSize, imgSize, channelIdNuclei, channelIdSpheroids, channelIdSpo
         try
             pixelSize = [ dataTable.pixelSizeX(row),dataTable.pixelSizeY(row), dataTable.pixelSizeZ(row) ];
         catch
-            warndlg('extractParametersImages::No definitions in samples table for the pixel size. Trying to extract pixel size from OME metadata using bioformats')
+            warning('extractParametersImages::No definitions in samples table for the pixel size. Trying to extract pixel size from OME metadata using bioformats')
             try
                 [meta, ~] = getOmeMeta(dataTable.imageFilePath(row));
                 pixelSize = [ meta.pixelSizeX, meta.pixelSizeY, meta.pixelSizeZ ];
             catch
-                warndlg('No definitions for the pixel size found in samples table nor in the image metadata using bioformats')
+                warning('No definitions for the pixel size found in samples table nor in the image metadata using bioformats')
                 error('extractParametersImages::Cannot extract the pixel size from OME metadata using bioformats')
             end
         end
         try
             imgSize = [ dataTable.sizeX(row),dataTable.sizeY(row), dataTable.sizeZ(row) ];
         catch
-            warndlg('extractParametersImages::No definitions in samples table for the image size. Trying to extract image size from OME metadata using bioformats')
+            warning('extractParametersImages::No definitions in samples table for the image size. Trying to extract image size from OME metadata using bioformats')
             try
                 [meta, ~] = getOmeMeta(dataTable.imageFilePath(row));
                 imgSize = [ meta.sizeX, meta.sizeY, meta.sizeZ ];
             catch
-                warndlg('No definitions for the image size found in samples table nor in the image metadata using bioformats')
+                warning('No definitions for the image size found in samples table nor in the image metadata using bioformats')
                 error('extractParametersImages::Cannot extract the image size from OME metadata using bioformats')
             end
         end

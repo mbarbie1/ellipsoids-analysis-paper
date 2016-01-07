@@ -191,7 +191,8 @@ function [ msra, lab, labEllipse, imgSpheroids, spotTable, imgSpots, radialProfi
 		nScale = 32;
 		minSpotScale = max(2*pixelSize(1), options.spotDetection.defaultAvgSpotRadius / 8);
 		maxSpotScale = options.spotDetection.defaultAvgSpotRadius * 8;
-		options.spotDetection.avgSpotRadius = getOptimalLaplaceScale(imgMIPZ, minSpotScale, maxSpotScale, nScale, pixelSize);
+		[options.spotDetection.avgSpotRadius, plotSpotsScale] = getOptimalLaplaceScale(imgMIPZ, minSpotScale, maxSpotScale, nScale, pixelSize);
+		options.spotDetection.avgSpotRadius = options.spotDetection.avgSpotRadius * 2/3;  % Correction factor for Gaussian vs radius
 	end
 	if (options.spotDetection.maxSpotRadiusAutomatic)
 		options.spotDetection.maxSpotRadius = 1.5 * options.spotDetection.avgSpotRadius;
