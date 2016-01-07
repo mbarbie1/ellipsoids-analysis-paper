@@ -25,7 +25,7 @@ function [imgMIPZ, imgMIPZH, lab, imgContour] = spheroidSegmentation2D( img, fct
 
 %%% 2D SEGMENTATION
 
-	%disp(fctOps.pixelSize);
+	disp(fctOps.pixelSize);
     minSpheroidArea = round( pi * ( fctOps.minRadius/fctOps.pixelSize(1) )^2 );
     switch fctOps.segmentationMethod
         case 'threshold'
@@ -81,12 +81,9 @@ function [imgMIPZ, imgMIPZH, lab, imgContour] = spheroidSegmentation2D( img, fct
 	end
 	if (fctOps.thresholdIntensityAutomatic)
 		fctOps.thresholdIntensity = mean( imgMIPZ(lab == 0) );
-		%disp('Automatic threshold:')
-		%disp(fctOps.thresholdIntensity)
-	else
-		%disp('Manual threshold:')
-		%disp(fctOps.thresholdIntensity)
+		disp('Automatic threshold:')
 	end
+	disp()
 	lab = filterSegmentation2D( lab, imgMIPZ, fctOps.pixelSize, fctOps.minRadius, fctOps.maxRadius, fctOps.removeBorderObjectsInPlane, fctOps.thresholdIntensity);
     
 

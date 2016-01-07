@@ -5,7 +5,7 @@ function [] = gui_analyseImageBatchProcess()
     % External libs
     addpath(genpath('../libExternal'));
 % LOAD DEFAULT OPTIONS
-    options = loadjson('appdata/options_default.json');
+    options = loadjson('appdata/options_default_minimal.json');
 
 % INITIALIZE DEFAULT GUI
     fh = generateGUI(options);
@@ -537,6 +537,11 @@ function initSettings(fh)
                 S.options.(S.options.settings{k}.category).([S.options.settings{k}.name 'Automatic']) = S.options.settings{k}.automatic;
 				set(S.hSetting{k,3},'Value',S.options.settings{1,k}.value);
 				set(S.hSetting{k,2},'Value',S.options.settings{k}.automatic);
+				if (S.options.settings{k}.automatic)
+					set(S.hSetting{k,3}, 'Enable', 'off')
+				else
+					set(S.hSetting{k,3}, 'Enable', 'on')
+				end
             case 'boolean'
                 S.options.(S.options.settings{1,k}.category).(S.options.settings{1,k}.name) = S.options.settings{1,k}.value;
 				set(S.hSetting{k,2},'Value',S.options.settings{1,k}.value);
