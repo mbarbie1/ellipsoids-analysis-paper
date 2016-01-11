@@ -21,8 +21,28 @@ function loadDIPimage(fh)
     S = guidata(fh);
     try
         if ( exist('dip_initialise_libs')==2 )
-		else
-			dip_initialise();
+        else
+            if exist('dip_initialise')
+                dip_initialise();
+            else
+                res = questdlg('DIPimage could not be initialised, if you installed it then it is possible the path to the DIPimage library is not added to the MATLAB path. In that case press OK to select the folder of the DIPimage installation (e.g. C:/Program Files/DIPimage 2.7) in the next dialog',...
+                    'DIPimage could not be initialised. Alternatively, press Cancel not to add the path and continue,or Exit to exit the progam', ...
+                    'OK','Cancel','Exit',...
+                    'OK');
+                switch res
+                    case 'OK'
+                        pathDir = uigetdir('.',...
+                            'Select the DIPimage folder (e.g. C:/Program Files/DIPimage 2.6)');
+                        dipimagePath = fullfile(pathDir,'common','dipimage');
+                        addpath( dipimagePath );
+                        dip_initialise();
+                    case 'Cancel'
+                    case 'Exit'
+                        %CloseRequestFcn(fh, eventdata, handles)
+                        delete(fh);
+                        return;
+                end
+            end
 		end
 		%run('C:\Program Files\DIPimage 2.6\dipstart.m');
         S.dipimageLoaded = true;
@@ -463,6 +483,14 @@ function updateControlsGUI(fh)
 %     end
 
     w = w*2;
+%     S.hloadDIPimage = uicontrol(...
+%         'Parent',S.panelPlots,...
+%         'Style','pushbutton',...
+%         'String','Add DIPimage path',...
+%         'backgroundcolor',get(fh,'color'),...
+%         'unit','normalized',...
+%         'Position',[1-3*marginx-3*w, y, w, h],...
+%         'Callback',@loadDIPimageButton_callback);
     S.hloadSamples = uicontrol(...
         'Parent',S.panelPlots,...
         'Style','pushbutton',...
@@ -878,6 +906,18 @@ function showSamplesButton_callback(hObject, eventdata)
     catch
         warning('No samples table exists');
     end
+end
+
+function loadDIPimageButton_callback(hObject, eventdata)
+    % User input for the DIPimage path
+    disp('User picks DIPimage path when DIPimage is not added to the MATLAB path yet');
+       
+    pathDir = uigetdir('.',...
+        'Select the DIPimage folder (e.g. C:/Program Files/DIPimage 2.6)');
+    dipimagePath = fullfile(pathDir,'common','dipimage');
+	addpath( dipimagePath );
+    loadDIPimage(fh);
+    disp( dipimagePath );
 end
 
 function settingsUpdate_callback(hObject, eventdata, varargin)
