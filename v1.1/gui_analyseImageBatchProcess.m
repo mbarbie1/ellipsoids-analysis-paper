@@ -1,6 +1,5 @@
 function [] = gui_analyseImageBatchProcess()
 
-    try
         % libs
         addpath(genpath('../lib'));
         % External libs
@@ -9,20 +8,23 @@ function [] = gui_analyseImageBatchProcess()
         options = loadjson('appdata/options_default_minimal.json');
 
     % INITIALIZE DEFAULT GUI
+    try
         fh = generateGUI(options);
-        S = guidata(fh);
-
-        %initDefaultSamples(fh);
-        updateGUI(fh)
     catch e
         switch e.identifier 
             case 'gui:exit'
                 disp('EXIT');
                 return;
             otherwise
-                disp('Unknown error: %s', e.message);
+                %disp('Unknown error: %s', e.message);
         end
     end
+        S = guidata(fh);
+
+        %initDefaultSamples(fh);
+        updateGUI(fh)
+
+
 end
 
 % function CloseRequest(fh, eventdata, handles)
@@ -65,11 +67,9 @@ function loadDIPimage(fh)
             case 'gui:exit'
                 rethrow(e);
             case 'gui:dipimage:cancel'
-                warndlg('DIPimage could not be loaded.');
-                return;
+                %warndlg('Canceled: DIPimage could not be loaded.');
             otherwise
-                warndlg('DIPimage could not be loaded.');
-                return;
+                %warndlg('Unknown error: DIPimage could not be loaded.');
         end
     end
     guidata(fh,S);
@@ -81,6 +81,7 @@ function fh = generateGUI(options)
     S.options = options;
     S.samplesLoaded = false;
     S.dipimageLoaded = false;
+    S.hlog = log4m.getLogger('logfile.txt');
 
 %%%  Create an empty gui
     [ winx, winy, winw, winh, groups, h, marginx ] = getWindowSpecifications(S.options);
@@ -553,8 +554,9 @@ function updateWaitGUI(fh)
         'Title',p.label,...
         'backgroundcolor',get(fh,'color'),...
         'Position', p.position);
-    
-    S.hwait = waitbar2a(0,S.panelWait);
+        
+    S.hwait = waitbar2a(0, S.panelWait);
+    waitbar2a(0, S.hwait, 'No process');
 
     guidata(fh,S);
 
@@ -633,16 +635,16 @@ function updateSettingsGUI(fh)
         'Parent',fh,...
         'Title',p.label,...
         'Position', p.position);
-    tgroup = uitabgroup('Parent', S.panelSettings,'Units','normalized', ...
-        'BackgroundColor',get(fh,'color') );
+    tgroup = uitabgroup('Parent', S.panelSettings,'Units','normalized');
+    %set(tgroup, 'BackgroundColor', get(fh,'color') );
     tab1 = uitab('Parent', tgroup, 'Title', 'Segmentation','Units','normalized',...
-        'BackgroundColor',get(fh,'color'));
+        'backgroundcolor',get(fh,'color'));
     tab2 = uitab('Parent', tgroup, 'Title', 'Ellipsoid fit','Units','normalized',...
-        'BackgroundColor',get(fh,'color'));
+        'backgroundcolor',get(fh,'color'));
     tab3 = uitab('Parent', tgroup, 'Title', 'Attenuation','Units','normalized',...
-        'BackgroundColor',get(fh,'color'));
+        'backgroundcolor',get(fh,'color'));
     tab4 = uitab('Parent', tgroup, 'Title', 'Spot detection','Units','normalized',...
-        'BackgroundColor',get(fh,'color'));
+        'backgroundcolor',get(fh,'color'));
 
     h = 1/(max(nS)+1);
 
@@ -891,7 +893,7 @@ function runButton_callback(hObject, eventdata)
         catch e
             return
         end
-        analyseImageBatchProcess(S.options, S.samplesTable)
+        analyseImageBatchProcess(S.options, S.samplesTable, S.hwait, S.hlog);
     else
         warndlg('Before a batch process can be run, a samples table should be loaded (using the "load samples" button.)');
     end

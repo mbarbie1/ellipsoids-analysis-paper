@@ -1,0 +1,16 @@
+2016-01-12 22:12:25,841 INFO analyseImageBatchProcess - Analysis image 1 of 1: image analysis: succesful
+2016-01-12 22:14:13,198 INFO analyseImageBatchProcess - Analysis image 1 of 1: image analysis: succesful
+2016-01-12 22:14:13,241 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-01-12 22:14:13,424 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spot detection measurements (csv) = 1.744438e-01
+
+2016-01-12 22:14:13,436 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spheroid measurements (csv)
+
+2016-01-12 22:14:13,621 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spheroid measurements (csv) = 1.765447e-01
+
+2016-01-12 22:14:13,631 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving summary of the measurements for each imageId (csv)
+
+2016-01-12 22:14:13,653 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spheroid measurements (csv) = 1.659159e-02
+
+2016-01-12 22:14:13,660 INFO analyseImageBatchProcess - Analysis image 1 of 1: Total processing time script = 4.311588e+01
+

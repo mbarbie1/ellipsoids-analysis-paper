@@ -1,7 +1,4 @@
-% FUNCTION: Segmentation and spot detection algorithm for the paper. 
-%           Not optimized for speed, in particular not useful in a batch 
-%           process (uses time-consuming 3D spot detection, 
-%           saves unnecessary information to disk, ...).
+% FUNCTION: Segmentation and spot detection algorithm. 
 %
 % INPUT:
 %
