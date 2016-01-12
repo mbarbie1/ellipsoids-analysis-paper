@@ -1,21 +1,35 @@
 function [] = gui_analyseImageBatchProcess()
 
-    % libs
-    addpath(genpath('../lib'));
-    % External libs
-    addpath(genpath('../libExternal'));
-% LOAD DEFAULT OPTIONS
-    options = loadjson('appdata/options_default_minimal.json');
+    try
+        % libs
+        addpath(genpath('../lib'));
+        % External libs
+        addpath(genpath('../libExternal'));
+    % LOAD DEFAULT OPTIONS
+        options = loadjson('appdata/options_default_minimal.json');
 
-% INITIALIZE DEFAULT GUI
-    fh = generateGUI(options);
-    S = guidata(fh);
+    % INITIALIZE DEFAULT GUI
+        fh = generateGUI(options);
+        S = guidata(fh);
 
-    %initDefaultSamples(fh);
-    updateGUI(fh)
-
+        %initDefaultSamples(fh);
+        updateGUI(fh)
+    catch e
+        switch e.identifier 
+            case 'gui:exit'
+                disp('EXIT');
+                return;
+            otherwise
+                disp('Unknown error: %s', e.message);
+        end
+    end
 end
 
+% function CloseRequest(fh, eventdata, handles)
+% 
+%     close(fh);
+% end
+% 
 function loadDIPimage(fh)
 
     S = guidata(fh);
@@ -25,8 +39,8 @@ function loadDIPimage(fh)
             if exist('dip_initialise')
                 dip_initialise();
             else
-                res = questdlg('DIPimage could not be initialised, if you installed it then it is possible the path to the DIPimage library is not added to the MATLAB path. In that case press OK to select the folder of the DIPimage installation (e.g. C:/Program Files/DIPimage 2.7) in the next dialog',...
-                    'DIPimage could not be initialised. Alternatively, press Cancel not to add the path and continue,or Exit to exit the progam', ...
+                res = questdlg('DIPimage could not be initialised, if you installed it then it is possible the path to the DIPimage library is not added to the MATLAB path. In that case press OK to select the folder of the DIPimage installation (e.g. C:/Program Files/DIPimage 2.7) in the next dialog. Alternatively, press Cancel not to add the path and continue,or Exit to exit the progam',...
+                    'DIPimage could not be initialised' , ...
                     'OK','Cancel','Exit',...
                     'OK');
                 switch res
@@ -37,18 +51,26 @@ function loadDIPimage(fh)
                         addpath( dipimagePath );
                         dip_initialise();
                     case 'Cancel'
+                        error('gui:dipimage:cancel', 'Cancel DIPimage loading');
                     case 'Exit'
-                        %CloseRequestFcn(fh, eventdata, handles)
-                        delete(fh);
-                        return;
+                        close(fh);
+                        error('gui:exit', 'Exit the program');
                 end
             end
 		end
 		%run('C:\Program Files\DIPimage 2.6\dipstart.m');
         S.dipimageLoaded = true;
     catch e
-        warndlg('DIPimage could not be loaded.');
-        return
+        switch e.identifier 
+            case 'gui:exit'
+                rethrow(e);
+            case 'gui:dipimage:cancel'
+                warndlg('DIPimage could not be loaded.');
+                return;
+            otherwise
+                warndlg('DIPimage could not be loaded.');
+                return;
+        end
     end
     guidata(fh,S);
 
@@ -611,16 +633,16 @@ function updateSettingsGUI(fh)
         'Parent',fh,...
         'Title',p.label,...
         'Position', p.position);
-    tgroup = uitabgroup('Parent', S.panelSettings,'Units','normalized');%,...
-        %'backgroundcolor',get(fh,'color'));
+    tgroup = uitabgroup('Parent', S.panelSettings,'Units','normalized', ...
+        'BackgroundColor',get(fh,'color') );
     tab1 = uitab('Parent', tgroup, 'Title', 'Segmentation','Units','normalized',...
-        'backgroundcolor',get(fh,'color'));
+        'BackgroundColor',get(fh,'color'));
     tab2 = uitab('Parent', tgroup, 'Title', 'Ellipsoid fit','Units','normalized',...
-        'backgroundcolor',get(fh,'color'));
+        'BackgroundColor',get(fh,'color'));
     tab3 = uitab('Parent', tgroup, 'Title', 'Attenuation','Units','normalized',...
-        'backgroundcolor',get(fh,'color'));
+        'BackgroundColor',get(fh,'color'));
     tab4 = uitab('Parent', tgroup, 'Title', 'Spot detection','Units','normalized',...
-        'backgroundcolor',get(fh,'color'));
+        'BackgroundColor',get(fh,'color'));
 
     h = 1/(max(nS)+1);
 
