@@ -88,7 +88,6 @@ function [imgMIPZ, imgMIPZH, lab, imgContour] = spheroidSegmentation2D( img, fct
 		%disp(fctOps.thresholdIntensity)
 	end
 	lab = filterSegmentation2D( lab, imgMIPZ, fctOps.pixelSize, fctOps.minRadius, fctOps.maxRadius, fctOps.removeBorderObjectsInPlane, fctOps.thresholdIntensity);
-    
 
 %%% SPLIT (AND MERGE)
 
