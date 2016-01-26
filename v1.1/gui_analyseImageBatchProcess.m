@@ -38,6 +38,10 @@ function loadDIPimage(fh)
     try
         if ( exist('dip_initialise_libs')==2 )
         else
+            try
+                addpath(S.option.dipimagePath);
+            catch
+            end
             if exist('dip_initialise')
                 dip_initialise();
             else
@@ -50,6 +54,7 @@ function loadDIPimage(fh)
                         pathDir = uigetdir('.',...
                             'Select the DIPimage folder (e.g. C:/Program Files/DIPimage 2.6)');
                         dipimagePath = fullfile(pathDir,'common','dipimage');
+                        S.options.dipimagePath = dipimagePath;
                         addpath( dipimagePath );
                         dip_initialise();
                     case 'Cancel'
