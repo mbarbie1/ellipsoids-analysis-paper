@@ -14,3 +14,40 @@
 
 2016-01-12 22:14:13,660 INFO analyseImageBatchProcess - Analysis image 1 of 1: Total processing time script = 4.311588e+01
 
+2016-01-26 08:50:04,129 INFO analyseImageBatchProcess - Analysis image 1 of 1: Image analysis failed: 	 	 Error-id: MATLAB:m_improper_grouping
+	 	 Error-message: Error: <a href="matlab: opentoline('C:
+2016-01-26 08:50:04,248 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-01-26 08:51:49,115 INFO analyseImageBatchProcess - Analysis image 1 of 1: Image analysis failed: 	 	 Error-id: MATLAB:nonExistentField
+	 	 Error-message: Reference to non-existent field 'spheroidRadiusThresholdAutomatic'.
+	 	 Stack trace:
+	 	 	 analyseImage at line 122
+	 	 	 analyseImageBatchProcess at line 67
+	 	 	 runButton_callback at line 901
+
+2016-01-26 08:51:49,171 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-01-26 08:53:08,651 INFO analyseImageBatchProcess - Analysis image 1 of 1: Image analysis failed: 	 	 Error-id: MATLAB:nonExistentField
+	 	 Error-message: Reference to non-existent field 'spheroidRadiusThresholdAutomatic'.
+	 	 Stack trace:
+	 	 	 analyseImage at line 122
+	 	 	 analyseImageBatchProcess at line 67
+	 	 	 runButton_callback at line 901
+
+2016-01-26 08:53:08,678 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-01-26 08:56:51,819 INFO analyseImageBatchProcess - Analysis image 1 of 1: image analysis: succesful
+2016-01-26 08:56:51,841 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-01-26 08:56:52,286 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spot detection measurements (csv) = 4.337622e-01
+
+2016-01-26 08:56:52,297 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spheroid measurements (csv)
+
+2016-01-26 08:56:52,492 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spheroid measurements (csv) = 1.849779e-01
+
+2016-01-26 08:56:52,503 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving summary of the measurements for each imageId (csv)
+
+2016-01-26 08:56:52,560 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spheroid measurements (csv) = 5.095519e-02
+
+2016-01-26 08:56:52,570 INFO analyseImageBatchProcess - Analysis image 1 of 1: Total processing time script = 5.320169e+01
+

@@ -273,6 +273,16 @@
                 "type":         "boolean",
                 "value":         0
 		},
+		{
+				"category":		"ellipsoidFit",
+				"name":			"spheroidRadiusThreshold",
+				"label":        "Minimal spheroid radius to derive the z-radius dimension from the 3D signal intensity",
+				"description":  "",
+				"group":        "all",
+                "type":         "numeric",
+                "automatic":     0,
+                "value":         20
+		},
         {
 				"category":		"spotDetection",
 				"name":			"method",
@@ -306,16 +316,6 @@
 		},
 		{
 				"category":		"attenuationAnalysis",
-				"name":			"spheroidRadiusThreshold",
-				"label":        "Threshold on spheroid radius for z-parameter determination?",
-				"description":  "",
-				"group":        "all",
-                "type":         "numeric",
-                "automatic":     0,
-                "value":         20
-		},
-		{
-				"category":		"attenuationAnalysis",
 				"name":			"profileAttenuationRatio",
 				"label":        "spheroid channel intensity percentage for attenuation",
 				"description":  "",
@@ -343,6 +343,7 @@
         "noiseThresh":                      0.001
     },
     "ellipsoidFit": {
+        "spheroidRadiusThreshold":          20,
         "centerMethod":                     "rimHeight",
         "zRadiusMethod":                    "averageRadius",
         "radialProfiles":                   0
@@ -356,7 +357,6 @@
         "maxSpotDetectorRatio":             0.2
     },
     "attenuationAnalysis": {
-        "spheroidRadiusThreshold":          20,
         "profileAttenuationRatio":          [0.5,0.25,0.1]
     },
     "summary": {

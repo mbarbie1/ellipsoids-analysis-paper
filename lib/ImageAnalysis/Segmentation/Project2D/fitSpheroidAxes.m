@@ -1,4 +1,4 @@
-function [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, cprof2D, spheroidIndexStart, spheroidIndexStop] = fitSpheroidAxes(imgOri, img, imgH, lab, pixelSize, centerMethod, zRadiusMethod)
+function [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, cprof2D, spheroidIndexStart, spheroidIndexStop] = fitSpheroidAxes(imgOri, img, imgH, lab, pixelSize, centerMethod, zRadiusMethod, thresholdRadiusSimpleProfile)
 % -----------------------------------------------------------------------
 % 
 % FUNCTION: fitSpheroidAxes
@@ -43,7 +43,6 @@ function [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, cprof
     fprintf('Process: fitSpheroidAxes\n');
     tic;
 
-    thresholdRadiusSimpleProfile = 15;
     
     % The axis and center in 2D we obtain from measuring the labeled
     % image

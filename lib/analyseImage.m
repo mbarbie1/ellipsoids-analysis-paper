@@ -119,6 +119,9 @@ function [ msra, lab, labEllipse, imgSpheroids, spotTable, imgSpots, radialProfi
 
     % 2D segmentation of the image
     options.segmentation.pixelSize = pixelSize;
+    if ( options.ellipsoidFit.spheroidRadiusThresholdAutomatic )
+        options.ellipsoidFit.spheroidRadiusThreshold = 24 / pixelSize(1);
+    end
     switch options.segmentation.segmentationMethod
         case 'manual'
             subStruct.name = {'n'}; subStruct.value = {imageId}; subStruct.type = {'int'};
@@ -128,7 +131,7 @@ function [ msra, lab, labEllipse, imgSpheroids, spotTable, imgSpots, radialProfi
             roi = ReadImageJROI( fullfile(ROIImageDir, ROIFilename) );
             [imgMIPZ, imgMIPZH, lab, contour, roi] = manualSegmentation2D( img, roi, options.segmentation );
             % Fitting of ellipsoids to the lab image
-            [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, centerProfiles, spheroidIndexStart, spheroidIndexStop] = fitSpheroidAxesRoi(img, imgMIPZ, imgMIPZH, roi, options.input.pixelSize, options.ellipsoidFit.centerMethod, options.ellipsoidFit.zRadiusMethod);
+            [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, centerProfiles, spheroidIndexStart, spheroidIndexStop] = fitSpheroidAxesRoi(img, imgMIPZ, imgMIPZH, roi, options.input.pixelSize, options.ellipsoidFit.centerMethod, options.ellipsoidFit.zRadiusMethod, options.ellipsoidFit.spheroidRadiusThreshold );
             radialProfiles = [];
             % Derive a valid range for the depth of the spheroid, which can be
             % used for the spot detection without missing any spots, from the 
@@ -140,15 +143,9 @@ function [ msra, lab, labEllipse, imgSpheroids, spotTable, imgSpots, radialProfi
         otherwise
             [imgMIPZ, imgMIPZH, lab, contour] = spheroidSegmentation2D( img, options.segmentation );
             % Fitting of ellipsoids to the lab image
-            [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, centerProfiles, spheroidIndexStart, spheroidIndexStop] = fitSpheroidAxes(img, imgMIPZ, imgMIPZH, lab, options.input.pixelSize, options.ellipsoidFit.centerMethod, options.ellipsoidFit.zRadiusMethod);
+            [labEllipse, center3D, principalAxesList3D, axesDimensionsList3D, centerProfiles, spheroidIndexStart, spheroidIndexStop] = fitSpheroidAxes(img, imgMIPZ, imgMIPZH, lab, options.input.pixelSize, options.ellipsoidFit.centerMethod, options.ellipsoidFit.zRadiusMethod, options.ellipsoidFit.spheroidRadiusThreshold );
             % rad
             radialProfiles = [];
-        % %    if ( exist( 'option.ellipsoidFit.radialProfiles', 'var' ) )
-        %         if ( options.ellipsoidFit.radialProfiles )
-        %             radialProfiles = spheroidRadialIntensityCurves2D( img, lab > 0, options.input.pixelSize);
-        %             dipshow(radialProfiles);
-        %         end
-        % %    end
             % Derive a valid range for the depth of the spheroid, which can be
             % used for the spot detection without missing any spots, from the 
             % intensity profiles through the spheroid centers
