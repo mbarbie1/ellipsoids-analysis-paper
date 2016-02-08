@@ -5,7 +5,7 @@ function [] = gui_analyseImageBatchProcess()
         % External libs
         addpath(genpath('../libExternal'));
     % LOAD DEFAULT OPTIONS
-        options = loadjson('appdata/options_default_minimal.json');
+        options = loadjson('appdata/options_default_LNCaP.json');
 
     % INITIALIZE DEFAULT GUI
     try

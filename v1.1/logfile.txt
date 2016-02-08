@@ -51,3 +51,74 @@
 
 2016-01-26 08:56:52,570 INFO analyseImageBatchProcess - Analysis image 1 of 1: Total processing time script = 5.320169e+01
 
+2016-02-07 13:57:11,925 INFO analyseImageBatchProcess - Analysis image 1 of 8: Image analysis failed: 	 	 Error-id: MATLAB:Java:GenericException
+	 	 Error-message: Java exception occurred: 
+loci.formats.UnknownFormatException: Unknown file format: C:
+2016-02-07 13:57:19,428 INFO analyseImageBatchProcess - Analysis image 2 of 8: Image analysis failed: 	 	 Error-id: MATLAB:unassignedOutputs
+	 	 Error-message: Output argument "r" (and maybe others) not assigned during call to "C:
+2016-02-07 13:57:21,066 INFO analyseImageBatchProcess - Analysis image 3 of 8: Image analysis failed: 	 	 Error-id: MATLAB:unassignedOutputs
+	 	 Error-message: Output argument "r" (and maybe others) not assigned during call to "C:
+2016-02-07 13:57:22,423 INFO analyseImageBatchProcess - Analysis image 4 of 8: Image analysis failed: 	 	 Error-id: MATLAB:unassignedOutputs
+	 	 Error-message: Output argument "r" (and maybe others) not assigned during call to "C:
+2016-02-07 13:57:23,843 INFO analyseImageBatchProcess - Analysis image 5 of 8: Image analysis failed: 	 	 Error-id: MATLAB:unassignedOutputs
+	 	 Error-message: Output argument "r" (and maybe others) not assigned during call to "C:
+2016-02-07 13:57:25,203 INFO analyseImageBatchProcess - Analysis image 6 of 8: Image analysis failed: 	 	 Error-id: MATLAB:unassignedOutputs
+	 	 Error-message: Output argument "r" (and maybe others) not assigned during call to "C:
+2016-02-07 13:57:26,731 INFO analyseImageBatchProcess - Analysis image 7 of 8: Image analysis failed: 	 	 Error-id: MATLAB:unassignedOutputs
+	 	 Error-message: Output argument "r" (and maybe others) not assigned during call to "C:
+2016-02-07 14:11:05,236 INFO analyseImageBatchProcess - Analysis image 1 of 8: Image analysis failed: 	 	 Error-id: MATLAB:maxrhs
+	 	 Error-message: Too many input arguments.
+	 	 Stack trace:
+	 	 	 bfGetReader at line 63
+	 	 	 readImageStack at line 5
+	 	 	 loadMicroscopeImageStack at line 26
+	 	 	 analyseImage at line 113
+	 	 	 analyseImageBatchProcess at line 67
+	 	 	 runButton_callback at line 901
+
+2016-02-07 14:12:21,867 INFO analyseImageBatchProcess - Analysis image 2 of 8: Image analysis failed: 	 	 Error-id: MATLAB:unassignedOutputs
+	 	 Error-message: Output argument "r" (and maybe others) not assigned during call to "C:
+2016-02-07 14:12:25,221 INFO analyseImageBatchProcess - Analysis image 3 of 8: Image analysis failed: 	 	 Error-id: MATLAB:unassignedOutputs
+	 	 Error-message: Output argument "r" (and maybe others) not assigned during call to "C:
+2016-02-07 14:12:26,906 INFO analyseImageBatchProcess - Analysis image 4 of 8: Image analysis failed: 	 	 Error-id: MATLAB:unassignedOutputs
+	 	 Error-message: Output argument "r" (and maybe others) not assigned during call to "C:
+2016-02-07 14:12:28,247 INFO analyseImageBatchProcess - Analysis image 5 of 8: Image analysis failed: 	 	 Error-id: MATLAB:unassignedOutputs
+	 	 Error-message: Output argument "r" (and maybe others) not assigned during call to "C:
+2016-02-07 14:12:29,620 INFO analyseImageBatchProcess - Analysis image 6 of 8: Image analysis failed: 	 	 Error-id: MATLAB:unassignedOutputs
+	 	 Error-message: Output argument "r" (and maybe others) not assigned during call to "C:
+2016-02-07 14:12:31,118 INFO analyseImageBatchProcess - Analysis image 7 of 8: Image analysis failed: 	 	 Error-id: MATLAB:unassignedOutputs
+	 	 Error-message: Output argument "r" (and maybe others) not assigned during call to "C:
+2016-02-07 14:12:33,099 INFO analyseImageBatchProcess - Analysis image 8 of 8: Image analysis failed: 	 	 Error-id: MATLAB:unassignedOutputs
+	 	 Error-message: Output argument "r" (and maybe others) not assigned during call to "C:
+2016-02-07 14:12:33,130 INFO analyseImageBatchProcess - Analysis image 8 of 8: Saving all spot detection measurements (csv)
+
+2016-02-07 14:23:41,717 INFO analyseImageBatchProcess - Analysis image 1 of 1: image analysis: succesful
+2016-02-07 14:23:41,795 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-02-07 14:23:42,326 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spot detection measurements (csv) = 5.026162e-01
+
+2016-02-07 14:23:42,341 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spheroid measurements (csv)
+
+2016-02-07 14:23:42,528 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spheroid measurements (csv) = 1.454081e-01
+
+2016-02-07 14:23:42,544 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving summary of the measurements for each imageId (csv)
+
+2016-02-07 14:23:42,622 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spheroid measurements (csv) = 6.681586e-02
+
+2016-02-07 14:23:42,638 INFO analyseImageBatchProcess - Analysis image 1 of 1: Total processing time script = 2.756781e+02
+
+2016-02-07 14:56:04,716 INFO analyseImageBatchProcess - Analysis image 1 of 1: image analysis: succesful
+2016-02-07 14:56:04,763 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-02-07 14:56:04,966 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spot detection measurements (csv) = 1.995392e-01
+
+2016-02-07 14:56:04,966 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spheroid measurements (csv)
+
+2016-02-07 14:56:05,013 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spheroid measurements (csv) = 2.921028e-02
+
+2016-02-07 14:56:05,013 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving summary of the measurements for each imageId (csv)
+
+2016-02-07 14:56:05,044 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spheroid measurements (csv) = 1.345057e-02
+
+2016-02-07 14:56:05,044 INFO analyseImageBatchProcess - Analysis image 1 of 1: Total processing time script = 1.782214e+02
+

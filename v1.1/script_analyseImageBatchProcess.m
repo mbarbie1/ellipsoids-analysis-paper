@@ -63,7 +63,7 @@
 
 %% PARAMETERS
 
-   options = loadjson('input/options_default.json');
+   options = loadjson('appdata/options_default.json');
 
 %% IMPORT SAMPLES
 
