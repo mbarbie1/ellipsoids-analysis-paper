@@ -16,7 +16,7 @@ function [] = gui_analyseImageBatchProcess()
                 disp('EXIT');
                 return;
             otherwise
-                %disp('Unknown error: %s', e.message);
+                fprintf('Unknown error: %s', e.message);
         end
     end
         S = guidata(fh);

@@ -25,7 +25,6 @@ function [imgMIPZ, imgMIPZH, lab, imgContour] = spheroidSegmentation2D( img, fct
 
 %%% 2D SEGMENTATION
 
-	%disp(fctOps.pixelSize);
     minSpheroidArea = round( pi * ( fctOps.minRadius/fctOps.pixelSize(1) )^2 );
     switch fctOps.segmentationMethod
         case 'threshold'

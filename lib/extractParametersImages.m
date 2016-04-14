@@ -32,30 +32,37 @@ function [ pixelSize, imgSize, channelIdNuclei, channelIdSpheroids, channelIdSpo
 %
         imageId = fctOps.input.imageId;
         row = find(dataTable.imageId == imageId, 1, 'first');
-        try
+		try
             pixelSize = [ dataTable.pixelSizeX(row),dataTable.pixelSizeY(row), dataTable.pixelSizeZ(row) ];
-        catch
+		catch
             warning('extractParametersImages::No definitions in samples table for the pixel size. Trying to extract pixel size from OME metadata using bioformats')
-            try
+			try
                 [meta, ~] = getOmeMeta(dataTable.imageFilePath(row));
                 pixelSize = [ meta.pixelSizeX, meta.pixelSizeY, meta.pixelSizeZ ];
-            catch
+			catch
                 warning('No definitions for the pixel size found in samples table nor in the image metadata using bioformats')
                 error('extractParametersImages::Cannot extract the pixel size from OME metadata using bioformats')
-            end
-        end
-        try
+			end
+		end
+		if iscell( pixelSize(1) )
+			tmp1 = pixelSize(1);
+			tmp2 = pixelSize(2);
+			tmp3 = pixelSize(3);
+			pixelSize = [tmp1, tmp2, tmp3];
+		end
+
+		try
             imgSize = [ dataTable.sizeX(row),dataTable.sizeY(row), dataTable.sizeZ(row) ];
         catch
             warning('extractParametersImages::No definitions in samples table for the image size. Trying to extract image size from OME metadata using bioformats')
-            try
+			try
                 [meta, ~] = getOmeMeta(dataTable.imageFilePath(row));
                 imgSize = [ meta.sizeX, meta.sizeY, meta.sizeZ ];
             catch
                 warning('No definitions for the image size found in samples table nor in the image metadata using bioformats')
                 error('extractParametersImages::Cannot extract the image size from OME metadata using bioformats')
-            end
-        end
+			end
+		end
         try
             channels = dataTable.channels(row);
             channels = channels{1};

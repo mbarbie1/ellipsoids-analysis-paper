@@ -1,0 +1,134 @@
+2016-02-24 11:32:44,700 INFO analyseImageBatchProcess - Analysis image 1 of 1: Image analysis failed: 	 	 Error-id: MATLAB:UndefinedFunction
+	 	 Error-message: Undefined function 'mrdivide' for input arguments of type 'cell'.
+	 	 Stack trace:
+	 	 	 spheroidSegmentation2D at line 29
+	 	 	 analyseImage at line 144
+	 	 	 analyseImageBatchProcess at line 67
+	 	 	 runButton_callback at line 901
+
+2016-02-24 11:32:44,872 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-02-24 13:59:07,432 INFO analyseImageBatchProcess - Analysis image 1 of 1: Image analysis failed: 	 	 Error-id: MATLAB:UndefinedFunction
+	 	 Error-message: Undefined function 'mrdivide' for input arguments of type 'cell'.
+	 	 Stack trace:
+	 	 	 spheroidSegmentation2D at line 32
+	 	 	 analyseImage at line 144
+	 	 	 analyseImageBatchProcess at line 67
+	 	 	 runButton_callback at line 901
+
+2016-02-24 13:59:07,464 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-02-24 14:00:49,083 INFO analyseImageBatchProcess - Analysis image 1 of 1: Image analysis failed: 	 	 Error-id: MATLAB:UndefinedFunction
+	 	 Error-message: Undefined function 'mrdivide' for input arguments of type 'cell'.
+	 	 Stack trace:
+	 	 	 spheroidSegmentation2D at line 34
+	 	 	 analyseImage at line 144
+	 	 	 analyseImageBatchProcess at line 67
+	 	 	 runButton_callback at line 901
+
+2016-02-24 14:00:49,106 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-02-24 14:12:33,444 INFO analyseImageBatchProcess - Analysis image 1 of 1: Image analysis failed: 	 	 Error-id: MATLAB:UndefinedFunction
+	 	 Error-message: Undefined function 'mrdivide' for input arguments of type 'cell'.
+	 	 Stack trace:
+	 	 	 spheroidSegmentation2D at line 34
+	 	 	 analyseImage at line 144
+	 	 	 analyseImageBatchProcess at line 67
+	 	 	 runButton_callback at line 901
+
+2016-02-24 14:12:33,470 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-02-24 14:16:58,833 INFO analyseImageBatchProcess - Analysis image 1 of 1: Image analysis failed: 	 	 Error-id: MATLAB:UndefinedFunction
+	 	 Error-message: Undefined function 'mrdivide' for input arguments of type 'cell'.
+	 	 Stack trace:
+	 	 	 spheroidSegmentation2D at line 34
+	 	 	 analyseImage at line 144
+	 	 	 analyseImageBatchProcess at line 67
+	 	 	 runButton_callback at line 901
+
+2016-02-24 14:16:58,864 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-02-24 14:21:42,247 INFO analyseImageBatchProcess - Analysis image 1 of 1: Image analysis failed: 	 	 Error-id: MATLAB:UndefinedFunction
+	 	 Error-message: Undefined function 'mrdivide' for input arguments of type 'cell'.
+	 	 Stack trace:
+	 	 	 spheroidSegmentation2D at line 31
+	 	 	 analyseImage at line 144
+	 	 	 analyseImageBatchProcess at line 67
+	 	 	 runButton_callback at line 901
+
+2016-02-24 14:21:42,261 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-02-24 14:29:01,614 INFO analyseImageBatchProcess - Analysis image 1 of 1: image analysis: succesful
+2016-02-24 14:29:01,650 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-02-24 14:29:01,848 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spot detection measurements (csv) = 1.842410e-01
+
+2016-02-24 14:29:01,867 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spheroid measurements (csv)
+
+2016-02-24 14:29:02,165 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spheroid measurements (csv) = 2.826930e-01
+
+2016-02-24 14:29:02,186 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving summary of the measurements for each imageId (csv)
+
+2016-02-24 14:29:02,218 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spheroid measurements (csv) = 2.037600e-02
+
+2016-02-24 14:29:02,230 INFO analyseImageBatchProcess - Analysis image 1 of 1: Total processing time script = 8.489995e+01
+
+2016-02-24 14:41:16,824 INFO analyseImageBatchProcess - Analysis image 1 of 1: image analysis: succesful
+2016-02-24 14:41:16,863 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spot detection measurements (csv)
+
+2016-02-24 14:41:17,118 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spot detection measurements (csv) = 2.422730e-01
+
+2016-02-24 14:41:17,134 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving all spheroid measurements (csv)
+
+2016-02-24 14:41:17,512 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spheroid measurements (csv) = 3.658130e-01
+
+2016-02-24 14:41:17,528 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving summary of the measurements for each imageId (csv)
+
+2016-02-24 14:41:17,550 INFO analyseImageBatchProcess - Analysis image 1 of 1: Saving time all spheroid measurements (csv) = 1.235600e-02
+
+2016-02-24 14:41:17,560 INFO analyseImageBatchProcess - Analysis image 1 of 1: Total processing time script = 9.844351e+01
+
+2016-02-24 14:52:43,428 INFO analyseImageBatchProcess - Analysis image 1 of 8: image analysis: succesful
+2016-02-24 14:56:48,441 INFO analyseImageBatchProcess - Analysis image 2 of 8: image analysis: succesful
+2016-02-24 15:00:40,958 INFO analyseImageBatchProcess - Analysis image 3 of 8: image analysis: succesful
+2016-02-24 15:04:36,147 INFO analyseImageBatchProcess - Analysis image 4 of 8: image analysis: succesful
+2016-02-24 15:07:48,608 INFO analyseImageBatchProcess - Analysis image 5 of 8: image analysis: succesful
+2016-02-24 15:11:16,446 INFO analyseImageBatchProcess - Analysis image 6 of 8: image analysis: succesful
+2016-02-24 15:14:40,305 INFO analyseImageBatchProcess - Analysis image 7 of 8: image analysis: succesful
+2016-02-24 15:18:39,769 INFO analyseImageBatchProcess - Analysis image 8 of 8: image analysis: succesful
+2016-02-24 15:18:40,327 INFO analyseImageBatchProcess - Analysis image 8 of 8: Saving all spot detection measurements (csv)
+
+2016-02-24 15:18:53,628 INFO analyseImageBatchProcess - Analysis image 8 of 8: Saving time all spot detection measurements (csv) = 1.326853e+01
+
+2016-02-24 15:18:53,863 INFO analyseImageBatchProcess - Analysis image 8 of 8: Saving all spheroid measurements (csv)
+
+2016-02-24 15:18:57,693 INFO analyseImageBatchProcess - Analysis image 8 of 8: Saving time all spheroid measurements (csv) = 3.800118e+00
+
+2016-02-24 15:18:57,803 INFO analyseImageBatchProcess - Analysis image 8 of 8: Saving summary of the measurements for each imageId (csv)
+
+2016-02-24 15:18:58,085 INFO analyseImageBatchProcess - Analysis image 8 of 8: Saving time all spheroid measurements (csv) = 2.735270e-01
+
+2016-02-24 15:18:58,123 INFO analyseImageBatchProcess - Analysis image 8 of 8: Total processing time script = 1.919157e+03
+
+2016-02-24 17:20:19,926 INFO analyseImageBatchProcess - Analysis image 1 of 8: image analysis: succesful
+2016-02-24 17:23:55,281 INFO analyseImageBatchProcess - Analysis image 2 of 8: image analysis: succesful
+2016-02-24 17:27:38,242 INFO analyseImageBatchProcess - Analysis image 3 of 8: image analysis: succesful
+2016-02-24 17:32:12,949 INFO analyseImageBatchProcess - Analysis image 4 of 8: image analysis: succesful
+2016-02-24 17:35:43,457 INFO analyseImageBatchProcess - Analysis image 5 of 8: image analysis: succesful
+2016-02-24 17:39:32,920 INFO analyseImageBatchProcess - Analysis image 6 of 8: image analysis: succesful
+2016-02-24 17:43:15,315 INFO analyseImageBatchProcess - Analysis image 7 of 8: image analysis: succesful
+2016-02-24 17:47:17,239 INFO analyseImageBatchProcess - Analysis image 8 of 8: image analysis: succesful
+2016-02-24 17:47:18,214 INFO analyseImageBatchProcess - Analysis image 8 of 8: Saving all spot detection measurements (csv)
+
+2016-02-24 17:47:42,294 INFO analyseImageBatchProcess - Analysis image 8 of 8: Saving time all spot detection measurements (csv) = 2.404124e+01
+
+2016-02-24 17:47:42,468 INFO analyseImageBatchProcess - Analysis image 8 of 8: Saving all spheroid measurements (csv)
+
+2016-02-24 17:47:47,679 INFO analyseImageBatchProcess - Analysis image 8 of 8: Saving time all spheroid measurements (csv) = 5.188215e+00
+
+2016-02-24 17:47:47,696 INFO analyseImageBatchProcess - Analysis image 8 of 8: Saving summary of the measurements for each imageId (csv)
+
+2016-02-24 17:47:47,969 INFO analyseImageBatchProcess - Analysis image 8 of 8: Saving time all spheroid measurements (csv) = 2.617660e-01
+
+2016-02-24 17:47:47,980 INFO analyseImageBatchProcess - Analysis image 8 of 8: Total processing time script = 1.855052e+03
+
